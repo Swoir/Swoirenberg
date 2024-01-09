@@ -1,0 +1,25 @@
+[package]
+name = "swoirenberg"
+version = "0.19.4-1" # This version should align with noir/barretenberg
+authors = ["Bartosz Nowak", "Michael Elliot"]
+repository = "https://github.com/Swoir/Swoirenberg.git"
+license = "Apache-2.0"
+edition = "2021"
+
+[lib]
+crate-type = ["staticlib"]
+
+[build-dependencies]
+swift-bridge-build = "0.1"
+sha2 = "0.10.8"
+regex = "1.10.2"
+
+[dependencies]
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+swift-bridge = "0.1"
+noir_rs = { git = "https://github.com/visoftsolutions/noir_rs.git", rev = "9e99af0cec41b6a7d6b93ba4b5b13638bd1c57fb", package = "noir_rs" }
+
+[profile.release]
+strip = "symbols"
+lto = true
