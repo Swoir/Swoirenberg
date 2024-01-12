@@ -1,8 +1,7 @@
 import Foundation
-import SwiftBridge
 
 extension RustVec where T == Int32 {
-    convenience init(from swiftArray: [Int32]) {
+    convenience public init(from swiftArray: [Int32]) {
         self.init()
         for element in swiftArray {
             self.push(value: element)
@@ -11,7 +10,7 @@ extension RustVec where T == Int32 {
 }
 
 extension RustVec where T == Int64 {
-    convenience init(from swiftArray: [Int64]) {
+    convenience public init(from swiftArray: [Int64]) {
         self.init()
         for element in swiftArray {
             self.push(value: element)
@@ -20,7 +19,7 @@ extension RustVec where T == Int64 {
 }
 
 extension RustVec where T == UInt8 {
-    convenience init(from data: Data) {
+    convenience public init(from data: Data) {
         self.init()
         data.forEach { byte in
             self.push(value: byte)

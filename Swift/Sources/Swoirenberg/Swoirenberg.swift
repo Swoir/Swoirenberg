@@ -1,5 +1,4 @@
 import Foundation
-import SwiftBridge
 import SwoirCore
 
 public class Swoirenberg: SwoirBackendProtocol {

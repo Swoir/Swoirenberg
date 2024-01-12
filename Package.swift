@@ -4,14 +4,11 @@ import PackageDescription
 
 let package = Package(
     name: "Swoirenberg",
-    platforms: [
-        .macOS(.v10_15),
-        .iOS(.v14),
-    ],
+    platforms: [ .macOS(.v10_15), .iOS(.v14) ],
     products: [
         .library(
             name: "Swoirenberg",
-            targets: ["Swoirenberg"]),
+            targets: ["Swoirenberg", "SwoirenbergFramework"]),
     ],
     dependencies: [
         .package(url: "https://github.com/Swoir/SwoirCore.git", exact: "0.1.0"),
@@ -19,23 +16,16 @@ let package = Package(
     targets: [
         .target(
             name: "Swoirenberg",
-            dependencies: ["SwiftBridge", "SwoirCore"],
-            path: "Swift/Sources/Swoirenberg"),
-        .target(
-            name: "SwiftBridge",
-            dependencies: ["CBridge"],
-            path: "Swift/Sources/Bridge/SwiftBridge"),
-        .target(
-            name: "CBridge",
-            dependencies: ["SwoirenbergFramework"],
-            path: "Swift/Sources/Bridge/CBridge",
+            dependencies: ["SwoirCore", "SwoirenbergFramework"],
+            path: "Swift/Sources/Swoirenberg",
             linkerSettings: [ .linkedFramework("SystemConfiguration") ]),
         .binaryTarget(
             name: "SwoirenbergFramework",
-            url: "https://github.com/Swoir/Swoirenberg/releases/download/v0.19.4-1/Swoirenberg.xcframework.zip",
-            checksum: "124e43aae00f2d4aa71ac9419575e2ebd035133009026177d749a6dd2e67012f"),
+            url: "https://github.com/Swoir/Swoirenberg/releases/download/v0.19.4-2/Swoirenberg.xcframework.zip",
+            checksum: "d15952bb8acd6c1142c0177b89fb258e0a9f1de69c9ca24bf82096fa821721db"),
         .testTarget(
             name: "SwoirenbergTests",
-            dependencies: ["Swoirenberg"]),
+            dependencies: ["Swoirenberg"],
+            path: "Swift/Tests/SwoirenbergTests"),
     ]
 )

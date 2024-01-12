@@ -1,21 +1,16 @@
 # Swoirenberg
 
-![Version](https://img.shields.io/badge/version-0.19.4--1-darkviolet)
+![Version](https://img.shields.io/badge/version-0.19.4--2-darkviolet)
 [![Noir](https://img.shields.io/badge/Noir-0.19.4-darkviolet)](https://github.com/AztecProtocol/aztec-packages/tree/master/noir)
 [![Swift 5](https://img.shields.io/badge/Swift-5-blue.svg)](https://developer.apple.com/swift/)
 [![License: Apache-2.0](https://img.shields.io/badge/License-Apache--2.0-green)](https://opensource.org/license/apache-2-0)
 
 Swoirenberg is a Swift library for creating and verifying proofs using [Barretenberg](https://github.com/AztecProtocol/aztec-packages/tree/master/barretenberg), the default backend proving system used by [Noir](https://noir-lang.org).
 
-## Architectures
+### Architectures
 
 - iOS with architectures: `arm64`
 - macOS with architectures: `x86_64`, `arm64`
-
-### Output Formats
-
-- XCFramework `Swoirenberg.xcframework`
-- Static library `libswoirenberg.a`
 
 ## Installation
 
@@ -28,6 +23,8 @@ $ git clone https://github.com/Swoir/Swoirenberg.git
 $ cd Swoirenberg
 $ make
 ```
+
+The result of the build process is located at `Frameworks/Swoirenberg.xcframework.zip`
 
 ## What is Swoirenberg.xcframework?
 

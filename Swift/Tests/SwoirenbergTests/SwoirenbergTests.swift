@@ -1,6 +1,5 @@
 import XCTest
 @testable import Swoirenberg
-@testable import SwiftBridge
 
 final class SwoirenbergTests: XCTestCase {
     func testProveAndVerify() throws {

@@ -1,6 +1,6 @@
 [package]
 name = "swoirenberg"
-version = "0.19.4-1" # This version should align with noir/barretenberg
+version = "0.19.4-2" # This version should align with noir/barretenberg
 authors = ["Bartosz Nowak", "Michael Elliot"]
 repository = "https://github.com/Swoir/Swoirenberg.git"
 license = "Apache-2.0"
