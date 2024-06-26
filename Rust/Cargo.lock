@@ -2957,7 +2957,7 @@ dependencies = [
 
 [[package]]
 name = "swoirenberg"
-version = "0.19.4-2"
+version = "0.30.0"
 dependencies = [
  "noir_rs",
  "regex",
