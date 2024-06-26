@@ -44,15 +44,14 @@ function copy_framework_files() {
 }
 
 # Strip debug symbols to reduce module size
-strip -x Rust/target/x86_64-apple-darwin/release/libswoirenberg.a Rust/target/aarch64-apple-darwin/release/libswoirenberg.a Rust/target/aarch64-apple-ios/release/libswoirenberg.a
+strip -x Rust/target/aarch64-apple-darwin/release/libswoirenberg.a Rust/target/aarch64-apple-ios/release/libswoirenberg.a
 
-# Create universal arm64_x86_64 module
-mkdir -p Rust/target/macos-arm64_x86_64/release
-lipo -create -output Rust/target/macos-arm64_x86_64/release/libswoirenberg.a \
-    Rust/target/aarch64-apple-darwin/release/libswoirenberg.a \
-    Rust/target/x86_64-apple-darwin/release/libswoirenberg.a
+# Create universal arm64 module
+mkdir -p Rust/target/macos-arm64/release
+lipo -create -output Rust/target/macos-arm64/release/libswoirenberg.a \
+    Rust/target/aarch64-apple-darwin/release/libswoirenberg.a
 
-frameworks=("macos-arm64_x86_64" "aarch64-apple-ios")
+frameworks=("macos-arm64" "aarch64-apple-ios")
 create_framework "${frameworks[@]}"
 
 echo "Zipping framework"

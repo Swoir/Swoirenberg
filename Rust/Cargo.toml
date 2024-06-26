@@ -18,7 +18,7 @@ regex = "1.10.2"
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
 swift-bridge = "0.1"
-noir_rs = { git = "https://github.com/visoftsolutions/noir_rs.git", rev = "9e99af0cec41b6a7d6b93ba4b5b13638bd1c57fb", package = "noir_rs" }
+noir_rs = { git = "https://github.com/madztheo/noir_rs.git", rev = "3f025faebaa75e7189dc66dfe8cfd50b0d9d84d5", package = "noir_rs" }
 
 [profile.release]
 strip = "symbols"

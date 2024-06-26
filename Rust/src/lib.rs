@@ -1,7 +1,7 @@
 use noir_rs::{
     native_types::{Witness, WitnessMap},
-    prove,
-    verify,
+    prove::prove,
+    verify::verify,
     FieldElement,
 };
 

@@ -10,7 +10,7 @@ Swoirenberg is a Swift library for creating and verifying proofs using [Barreten
 ### Architectures
 
 - iOS with architectures: `arm64`
-- macOS with architectures: `x86_64`, `arm64`
+- macOS with architectures: `arm64`
 
 ## Installation
 
