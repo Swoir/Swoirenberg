@@ -57,7 +57,7 @@ pub fn prove_swift(circuit_bytecode: String, initial_witness: Vec<i64>) -> Optio
         .collect();
     let mut initial_witness = WitnessMap::new();
     for (i, witness) in initial_witness_vec.into_iter().enumerate() {
-        initial_witness.insert(Witness(i as u32 + 1), witness);
+        initial_witness.insert(Witness(i as u32), witness);
     }
 
     let (proof, vkey) = prove(circuit_bytecode, initial_witness).ok()?;

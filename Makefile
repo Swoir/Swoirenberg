@@ -3,7 +3,10 @@
 
 CWD := $(abspath $(patsubst %/,%,$(dir $(abspath $(lastword $(MAKEFILE_LIST))))))
 
-all: build framework
+all: clean build framework
+
+clean:
+	$(CWD)/Scripts/clean.sh
 
 build:
 	$(CWD)/Scripts/build.sh
