@@ -3,13 +3,13 @@ import SwoirCore
 
 public class Swoirenberg: SwoirBackendProtocol {
 
-    public static func prove(bytecode: Data, witnessMap: [Int64]) throws -> SwoirCore.Proof {
+    public static func prove(bytecode: Data, witnessMap: [Int64], proof_type: String) throws -> SwoirCore.Proof {
         if bytecode.isEmpty { throw SwoirBackendError.emptyBytecode }
         if witnessMap.isEmpty { throw SwoirBackendError.emptyWitnessMap }
         let bytecodeBase64 = bytecode.base64EncodedString()
         let witnessMapRustVec = RustVec<Int64>(from: witnessMap)
 
-        guard let proofResult = prove_swift(bytecodeBase64, witnessMapRustVec) else {
+        guard let proofResult = prove_swift(bytecodeBase64, witnessMapRustVec, proof_type) else {
             throw SwoirBackendError.errorProving("Error generating proof")
         }
         let proof = SwoirCore.Proof(
@@ -18,13 +18,13 @@ public class Swoirenberg: SwoirBackendProtocol {
         return proof
     }
 
-    public static func verify(bytecode: Data, proof: SwoirCore.Proof) throws -> Bool {
+    public static func verify(bytecode: Data, proof: SwoirCore.Proof, proof_type: String) throws -> Bool {
         if bytecode.isEmpty { throw SwoirBackendError.emptyBytecode }
         if proof.proof.isEmpty { throw SwoirBackendError.emptyProofData }
         if proof.vkey.isEmpty { throw SwoirBackendError.emptyVerificationKey }
         let bytecodeBase64 = bytecode.base64EncodedString()
 
-        let verified = verify_swift(bytecodeBase64, RustVec<UInt8>(from: proof.proof), RustVec<UInt8>(from: proof.vkey)) ?? false
+        let verified = verify_swift(bytecodeBase64, RustVec<UInt8>(from: proof.proof), RustVec<UInt8>(from: proof.vkey), proof_type) ?? false
         return verified
     }
 }

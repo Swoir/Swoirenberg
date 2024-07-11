@@ -282,7 +282,7 @@ checksum = "8c3c1a368f70d6cf7302d78f8f7093da241fb8e8807c05cc9e51a125895a6d5b"
 [[package]]
 name = "bb_rs"
 version = "0.38.0"
-source = "git+https://github.com/madztheo/aztec-packages.git?branch=v0.38.0#9cf03f9d1ff095d1f84d5baad30a7c2b40763c48"
+source = "git+https://github.com/madztheo/aztec-packages.git?branch=v0.38.0#f48feadb12901d4871ec2d089bc735246294a4f7"
 dependencies = [
  "bindgen",
  "cmake",
@@ -1123,7 +1123,7 @@ dependencies = [
 [[package]]
 name = "nargo"
 version = "0.30.0"
-source = "git+https://github.com/madztheo/noir_rs.git?branch=v0.30.0#e99d126d8c461efda832e505821753437fbd6dc4"
+source = "git+https://github.com/madztheo/noir_rs.git?branch=v0.30.0#82269f04ecfa986e06bcbeb76fd8ae8838472369"
 dependencies = [
  "acir",
  "acvm",
@@ -1173,7 +1173,7 @@ dependencies = [
 [[package]]
 name = "noir_rs"
 version = "0.30.0"
-source = "git+https://github.com/madztheo/noir_rs.git?branch=v0.30.0#e99d126d8c461efda832e505821753437fbd6dc4"
+source = "git+https://github.com/madztheo/noir_rs.git?branch=v0.30.0#82269f04ecfa986e06bcbeb76fd8ae8838472369"
 dependencies = [
  "acir",
  "acvm",

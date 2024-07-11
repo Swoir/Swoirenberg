@@ -2,6 +2,8 @@ use noir_rs::{
     native_types::{Witness, WitnessMap},
     prove::prove,
     verify::verify,
+    prove::prove_honk,
+    verify::verify_honk,
     FieldElement,
 };
 
@@ -10,8 +12,8 @@ use noir_rs::{
 mod ffi {
     extern "Rust" {
         type Proof;
-        fn prove_swift(circuit_bytecode: String, initial_witness: Vec<i64>) -> Option<Proof>;
-        fn verify_swift(circuit_bytecode: String, proof: Vec<u8>, vkey: Vec<u8>) -> Option<bool>;
+        fn prove_swift(circuit_bytecode: String, initial_witness: Vec<i64>, proof_type: String) -> Option<Proof>;
+        fn verify_swift(circuit_bytecode: String, proof: Vec<u8>, vkey: Vec<u8>, proof_type: String) -> Option<bool>;
         fn proof_data_ptr(&self) -> *const u8;
         fn proof_data_len(&self) -> usize;
         fn vkey_data_ptr(&self) -> *const u8;
@@ -49,7 +51,7 @@ impl Proof {
 ///
 /// # Returns
 /// - `Option<Proof>`: The generated proof and its associated verification key wrapped in a `Proof` struct. Returns `None` if the proof generation fails.
-pub fn prove_swift(circuit_bytecode: String, initial_witness: Vec<i64>) -> Option<Proof> {
+pub fn prove_swift(circuit_bytecode: String, initial_witness: Vec<i64>, proof_type: String) -> Option<Proof> {
     let initial_witness_vec: Vec<FieldElement> = initial_witness
         .into_iter()
         .map(|f| f as i128)
@@ -60,11 +62,19 @@ pub fn prove_swift(circuit_bytecode: String, initial_witness: Vec<i64>) -> Optio
         initial_witness.insert(Witness(i as u32), witness);
     }
 
-    let (proof, vkey) = prove(circuit_bytecode, initial_witness).ok()?;
-    Some(Proof {
-        proof,
-        vkey,
-    })
+    if proof_type == "honk" {
+        let (proof, vkey) = prove_honk(circuit_bytecode, initial_witness).ok()?;
+        return Some(Proof {
+            proof,
+            vkey,
+        });
+    } else {
+        let (proof, vkey) = prove(circuit_bytecode, initial_witness).ok()?;
+        Some(Proof {
+            proof,
+            vkey,
+        })
+    }
 }
 
 /// Verifies a given zkSNARK proof using the associated circuit bytecode and verification key.
@@ -79,6 +89,11 @@ pub fn prove_swift(circuit_bytecode: String, initial_witness: Vec<i64>) -> Optio
 ///
 /// # Returns
 /// - `Option<bool>`: Returns `true` if the proof is valid, `false` otherwise. Returns `None` if the verification process fails.
-pub fn verify_swift(circuit_bytecode: String, proof: Vec<u8>, vkey: Vec<u8>) -> Option<bool> {
-    verify(circuit_bytecode, proof, vkey).ok()
+pub fn verify_swift(circuit_bytecode: String, proof: Vec<u8>, vkey: Vec<u8>, proof_type: String) -> Option<bool> {
+    if proof_type == "honk" {
+        verify_honk(circuit_bytecode, proof, vkey).ok()
+    } else {
+        verify(circuit_bytecode, proof, vkey).ok()
+    }
+
 }
