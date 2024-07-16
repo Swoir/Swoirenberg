@@ -1123,7 +1123,7 @@ dependencies = [
 [[package]]
 name = "nargo"
 version = "0.30.0"
-source = "git+https://github.com/madztheo/noir_rs.git?branch=v0.30.0#d6cb5d5c59114fb672dbba613ef9e48d4fa2a063"
+source = "git+https://github.com/madztheo/noir_rs.git?branch=v0.30.0#3ea35e5959550949ced6aae50378395a8421e6db"
 dependencies = [
  "acir",
  "acvm",
@@ -1173,7 +1173,7 @@ dependencies = [
 [[package]]
 name = "noir_rs"
 version = "0.30.0"
-source = "git+https://github.com/madztheo/noir_rs.git?branch=v0.30.0#d6cb5d5c59114fb672dbba613ef9e48d4fa2a063"
+source = "git+https://github.com/madztheo/noir_rs.git?branch=v0.30.0#3ea35e5959550949ced6aae50378395a8421e6db"
 dependencies = [
  "acir",
  "acvm",
@@ -1981,9 +1981,9 @@ checksum = "1f3ccbac311fea05f86f61904b462b55fb3df8837a366dfc601a0161d0532f20"
 
 [[package]]
 name = "tokio"
-version = "1.38.0"
+version = "1.38.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "ba4f4a02a7a80d6f274636f0aa95c7e383b912d41fe721a31f29e29698585a4a"
+checksum = "eb2caba9f80616f438e09748d5acda951967e1ea58508ef53d9c6402485a46df"
 dependencies = [
  "backtrace",
  "bytes",

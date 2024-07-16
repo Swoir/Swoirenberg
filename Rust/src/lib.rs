@@ -12,8 +12,8 @@ use noir_rs::{
 mod ffi {
     extern "Rust" {
         type Proof;
-        fn prove_swift(circuit_bytecode: String, initial_witness: Vec<i64>, proof_type: String) -> Option<Proof>;
-        fn verify_swift(circuit_bytecode: String, proof: Vec<u8>, vkey: Vec<u8>, proof_type: String) -> Option<bool>;
+        fn prove_swift(circuit_bytecode: String, initial_witness: Vec<i64>, proof_type: String, srs_path: Option<&str>) -> Option<Proof>;
+        fn verify_swift(circuit_bytecode: String, proof: Vec<u8>, vkey: Vec<u8>, proof_type: String, srs_path: Option<&str>) -> Option<bool>;
         fn proof_data_ptr(&self) -> *const u8;
         fn proof_data_len(&self) -> usize;
         fn vkey_data_ptr(&self) -> *const u8;
@@ -51,7 +51,7 @@ impl Proof {
 ///
 /// # Returns
 /// - `Option<Proof>`: The generated proof and its associated verification key wrapped in a `Proof` struct. Returns `None` if the proof generation fails.
-pub fn prove_swift(circuit_bytecode: String, initial_witness: Vec<i64>, proof_type: String) -> Option<Proof> {
+pub fn prove_swift(circuit_bytecode: String, initial_witness: Vec<i64>, proof_type: String, srs_path: Option<&str>) -> Option<Proof> {
     let initial_witness_vec: Vec<FieldElement> = initial_witness
         .into_iter()
         .map(|f| f as i128)
@@ -63,13 +63,13 @@ pub fn prove_swift(circuit_bytecode: String, initial_witness: Vec<i64>, proof_ty
     }
 
     if proof_type == "honk" {
-        let (proof, vkey) = prove_honk(circuit_bytecode, initial_witness).ok()?;
+        let (proof, vkey) = prove_honk(circuit_bytecode, initial_witness, srs_path).ok()?;
         return Some(Proof {
             proof,
             vkey,
         });
     } else {
-        let (proof, vkey) = prove(circuit_bytecode, initial_witness).ok()?;
+        let (proof, vkey) = prove(circuit_bytecode, initial_witness, srs_path).ok()?;
         Some(Proof {
             proof,
             vkey,
@@ -89,11 +89,11 @@ pub fn prove_swift(circuit_bytecode: String, initial_witness: Vec<i64>, proof_ty
 ///
 /// # Returns
 /// - `Option<bool>`: Returns `true` if the proof is valid, `false` otherwise. Returns `None` if the verification process fails.
-pub fn verify_swift(circuit_bytecode: String, proof: Vec<u8>, vkey: Vec<u8>, proof_type: String) -> Option<bool> {
+pub fn verify_swift(circuit_bytecode: String, proof: Vec<u8>, vkey: Vec<u8>, proof_type: String, srs_path: Option<&str>) -> Option<bool> {
     if proof_type == "honk" {
-        verify_honk(circuit_bytecode, proof, vkey).ok()
+        verify_honk(circuit_bytecode, proof, vkey, srs_path).ok()
     } else {
-        verify(circuit_bytecode, proof, vkey).ok()
+        verify(circuit_bytecode, proof, vkey, srs_path).ok()
     }
 
 }
