@@ -14,10 +14,37 @@ function create_framework() {
     for fw in "$@"; do
         fw_paths+=("-framework" ".artifacts/Frameworks/${fw}/$FWNAME.framework")
     done
+
+    # Create an Info.plist for each framework
+    # This is required by XCode starting version 15.3
+    for fw in "$@"; do
+        {
+        echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
+        echo "<!DOCTYPE plist PUBLIC \"-//Apple//DTD PLIST 1.0//EN\" \"http://www.apple.com/DTDs/PropertyList-1.0.dtd\">"
+        echo "<plist version=\"1.0\">"
+        echo "<dict>"
+        echo "    <key>CFBundlePackageType</key>"
+        echo "    <string>FMWK</string>"
+        echo "    <key>CFBundleIdentifier</key>"
+        echo "    <string>com.swoirenberg.$FWNAME</string>"
+        echo "    <key>CFBundleExecutable</key>"
+        echo "    <string>$FWNAME</string>"
+        echo "</dict>"
+        echo "</plist>"
+        } > ".artifacts/Frameworks/$fw/$FWNAME.framework/Info.plist"
+    done
+
     rm -rf "Frameworks/$XCFWNAME.xcframework"
     xcrun xcodebuild -create-xcframework \
         "${fw_paths[@]}" \
         -output "Frameworks/$XCFWNAME.xcframework"
+
+    # Set the SIGNING_IDENTITY environment variable to enable signing of the framework
+    # It's the name of the certificate you want to use to sign the framework
+    # e.g. "Apple Distribution: Company Name (ID)"
+    if [ -n "$SIGNING_IDENTITY" ]; then
+        codesign --timestamp -s "$SIGNING_IDENTITY" "Frameworks/$XCFWNAME.xcframework"
+    fi
 }
 
 function copy_framework_files() {
