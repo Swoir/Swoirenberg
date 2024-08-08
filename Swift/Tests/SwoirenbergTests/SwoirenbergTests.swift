@@ -14,7 +14,7 @@ final class SwoirenbergTests: XCTestCase {
         XCTAssertEqual(proof.vkey.count, 1719, "Invalid verification key returned")
         XCTAssertEqual(proof.vkey.sha256(), "7485f53732ab694457622a5fd0684f590cf9a64d7c7edfba4fe4bcbce09903a1", "Invalid verification key returned")
 
-        let valid = try Swoirenberg.verify(bytecode: circuitBytecode, proof: proof, proof_type: "plonk", num_points: num_points)
+        let valid = try Swoirenberg.verify(proof: proof, proof_type: "plonk", num_points: num_points)
         XCTAssertTrue(valid, "Failed to verify proof")
     }
 
@@ -31,7 +31,7 @@ final class SwoirenbergTests: XCTestCase {
         XCTAssertEqual(proof.vkey.count, 1624, "Invalid verification key returned")
         XCTAssertEqual(proof.vkey.sha256(), "d11d852621c8691dab1d1d60eac2d5ff85fe02da16e7733425c2611b129c7a2f", "Invalid verification key returned")
 
-        let valid = try Swoirenberg.verify(bytecode: circuitBytecode, proof: proof, proof_type: "honk", num_points: num_points)
+        let valid = try Swoirenberg.verify(proof: proof, proof_type: "honk", num_points: num_points)
         XCTAssertTrue(valid, "Failed to verify proof")
     }
 }

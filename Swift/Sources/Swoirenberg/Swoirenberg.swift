@@ -27,13 +27,11 @@ public class Swoirenberg: SwoirBackendProtocol {
         return proof
     }
 
-    public static func verify(bytecode: Data, proof: SwoirCore.Proof, proof_type: String, num_points: UInt32) throws -> Bool {
-        if bytecode.isEmpty { throw SwoirBackendError.emptyBytecode }
+    public static func verify(proof: SwoirCore.Proof, proof_type: String, num_points: UInt32) throws -> Bool {
         if proof.proof.isEmpty { throw SwoirBackendError.emptyProofData }
         if proof.vkey.isEmpty { throw SwoirBackendError.emptyVerificationKey }
-        let bytecodeBase64 = bytecode.base64EncodedString()
 
-        let verified = verify_swift(bytecodeBase64, RustVec<UInt8>(from: proof.proof), RustVec<UInt8>(from: proof.vkey), proof_type, num_points) ?? false
+        let verified = verify_swift(RustVec<UInt8>(from: proof.proof), RustVec<UInt8>(from: proof.vkey), proof_type, num_points) ?? false
         return verified
     }
 }

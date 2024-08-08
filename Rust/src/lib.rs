@@ -15,7 +15,7 @@ mod ffi {
         type Proof;
         fn setup_srs_swift(circuit_bytecode: String, srs_path: Option<&str>) -> Option<u32>;
         fn prove_swift(circuit_bytecode: String, initial_witness: Vec<i64>, proof_type: String, num_points: u32) -> Option<Proof>;
-        fn verify_swift(circuit_bytecode: String, proof: Vec<u8>, vkey: Vec<u8>, proof_type: String, num_points: u32) -> Option<bool>;
+        fn verify_swift(proof: Vec<u8>, vkey: Vec<u8>, proof_type: String, num_points: u32) -> Option<bool>;
         fn proof_data_ptr(&self) -> *const u8;
         fn proof_data_len(&self) -> usize;
         fn vkey_data_ptr(&self) -> *const u8;
@@ -93,11 +93,11 @@ pub fn prove_swift(circuit_bytecode: String, initial_witness: Vec<i64>, proof_ty
 ///
 /// # Returns
 /// - `Option<bool>`: Returns `true` if the proof is valid, `false` otherwise. Returns `None` if the verification process fails.
-pub fn verify_swift(circuit_bytecode: String, proof: Vec<u8>, vkey: Vec<u8>, proof_type: String, num_points: u32) -> Option<bool> {
+pub fn verify_swift(proof: Vec<u8>, vkey: Vec<u8>, proof_type: String, num_points: u32) -> Option<bool> {
     if proof_type == "honk" {
-        verify_honk(circuit_bytecode, proof, vkey).ok()
+        verify_honk(proof, vkey).ok()
     } else {
-        verify(circuit_bytecode, proof, vkey, num_points).ok()
+        verify(proof, vkey, num_points).ok()
     }
 
 }
