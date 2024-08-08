@@ -4,8 +4,8 @@ version = 3
 
 [[package]]
 name = "acir"
-version = "0.47.0"
-source = "git+https://github.com/noir-lang/noir.git?tag=v0.31.0#540bef3597bd3e5775c83ec2ee3c0d4463084b4c"
+version = "0.48.0"
+source = "git+https://github.com/noir-lang/noir.git?tag=v0.32.0#c679f01a19b02ad2ac2287c8e699b46887f7872c"
 dependencies = [
  "acir_field",
  "base64 0.21.7",
@@ -19,8 +19,8 @@ dependencies = [
 
 [[package]]
 name = "acir_field"
-version = "0.47.0"
-source = "git+https://github.com/noir-lang/noir.git?tag=v0.31.0#540bef3597bd3e5775c83ec2ee3c0d4463084b4c"
+version = "0.48.0"
+source = "git+https://github.com/noir-lang/noir.git?tag=v0.32.0#c679f01a19b02ad2ac2287c8e699b46887f7872c"
 dependencies = [
  "ark-bn254",
  "ark-ff",
@@ -32,8 +32,8 @@ dependencies = [
 
 [[package]]
 name = "acvm"
-version = "0.47.0"
-source = "git+https://github.com/noir-lang/noir.git?tag=v0.31.0#540bef3597bd3e5775c83ec2ee3c0d4463084b4c"
+version = "0.48.0"
+source = "git+https://github.com/noir-lang/noir.git?tag=v0.32.0#c679f01a19b02ad2ac2287c8e699b46887f7872c"
 dependencies = [
  "acir",
  "acvm_blackbox_solver",
@@ -47,8 +47,8 @@ dependencies = [
 
 [[package]]
 name = "acvm_blackbox_solver"
-version = "0.47.0"
-source = "git+https://github.com/noir-lang/noir.git?tag=v0.31.0#540bef3597bd3e5775c83ec2ee3c0d4463084b4c"
+version = "0.48.0"
+source = "git+https://github.com/noir-lang/noir.git?tag=v0.32.0#c679f01a19b02ad2ac2287c8e699b46887f7872c"
 dependencies = [
  "acir",
  "blake2",
@@ -281,8 +281,8 @@ checksum = "8c3c1a368f70d6cf7302d78f8f7093da241fb8e8807c05cc9e51a125895a6d5b"
 
 [[package]]
 name = "bb_rs"
-version = "0.41.0"
-source = "git+https://github.com/madztheo/aztec-packages.git?branch=v0.41.0#146991a4a496443d67707a4a50d7c8e7f884b15e"
+version = "0.46.1"
+source = "git+https://github.com/madztheo/aztec-packages.git?branch=v0.46.1#7b7521288bfc370d48e4070e6b8b8cde9d75b66f"
 dependencies = [
  "bindgen",
  "cmake",
@@ -368,8 +368,8 @@ dependencies = [
 
 [[package]]
 name = "bn254_blackbox_solver"
-version = "0.47.0"
-source = "git+https://github.com/noir-lang/noir.git?tag=v0.31.0#540bef3597bd3e5775c83ec2ee3c0d4463084b4c"
+version = "0.48.0"
+source = "git+https://github.com/noir-lang/noir.git?tag=v0.32.0#c679f01a19b02ad2ac2287c8e699b46887f7872c"
 dependencies = [
  "acir",
  "acvm_blackbox_solver",
@@ -384,8 +384,8 @@ dependencies = [
 
 [[package]]
 name = "brillig"
-version = "0.47.0"
-source = "git+https://github.com/noir-lang/noir.git?tag=v0.31.0#540bef3597bd3e5775c83ec2ee3c0d4463084b4c"
+version = "0.48.0"
+source = "git+https://github.com/noir-lang/noir.git?tag=v0.32.0#c679f01a19b02ad2ac2287c8e699b46887f7872c"
 dependencies = [
  "acir_field",
  "serde",
@@ -393,8 +393,8 @@ dependencies = [
 
 [[package]]
 name = "brillig_vm"
-version = "0.47.0"
-source = "git+https://github.com/noir-lang/noir.git?tag=v0.31.0#540bef3597bd3e5775c83ec2ee3c0d4463084b4c"
+version = "0.48.0"
+source = "git+https://github.com/noir-lang/noir.git?tag=v0.32.0#c679f01a19b02ad2ac2287c8e699b46887f7872c"
 dependencies = [
  "acir",
  "acvm_blackbox_solver",
@@ -1135,8 +1135,8 @@ dependencies = [
 
 [[package]]
 name = "nargo"
-version = "0.31.0"
-source = "git+https://github.com/madztheo/noir_rs.git?branch=v0.31.0#da32f099087e41923b672dd68214bb3cfb2d340e"
+version = "0.32.0"
+source = "git+https://github.com/madztheo/noir_rs.git?branch=v0.32.0#4e1b635f7138a21a355bfb3ac1d320770a5733fa"
 dependencies = [
  "acir",
  "acvm",
@@ -1185,8 +1185,8 @@ dependencies = [
 
 [[package]]
 name = "noir_rs"
-version = "0.31.0"
-source = "git+https://github.com/madztheo/noir_rs.git?branch=v0.31.0#da32f099087e41923b672dd68214bb3cfb2d340e"
+version = "0.32.0"
+source = "git+https://github.com/madztheo/noir_rs.git?branch=v0.32.0#4e1b635f7138a21a355bfb3ac1d320770a5733fa"
 dependencies = [
  "acir",
  "acvm",
@@ -1688,9 +1688,9 @@ checksum = "61697e0a1c7e512e84a621326239844a24d8207b4669b41bc18b32ea5cbf988b"
 
 [[package]]
 name = "serde"
-version = "1.0.204"
+version = "1.0.205"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "bc76f558e0cbb2a839d37354c575f1dc3fdc6546b5be373ba43d95f231bf7c12"
+checksum = "e33aedb1a7135da52b7c21791455563facbbcc43d0f0f66165b42c21b3dfb150"
 dependencies = [
  "serde_derive",
 ]
@@ -1706,9 +1706,9 @@ dependencies = [
 
 [[package]]
 name = "serde_derive"
-version = "1.0.204"
+version = "1.0.205"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e0cd7e117be63d3c3678776753929474f3b04a43a080c744d6b0ae2a8c28e222"
+checksum = "692d6f5ac90220161d6774db30c662202721e64aed9058d2c394f451261420c1"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -1834,9 +1834,9 @@ checksum = "13c2bddecc57b384dee18652358fb23172facb8a2c51ccc10d74c157bdea3292"
 
 [[package]]
 name = "swift-bridge"
-version = "0.1.55"
+version = "0.1.56"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "6180c668892926e0bc19d75a81b0ee2fdce3ab15ff062a61b3ce9b4d562eac1b"
+checksum = "2b0bf3f91b6012ef38623b35db17caa73c81aca17429079964bfc44c2965ec09"
 dependencies = [
  "swift-bridge-build",
  "swift-bridge-macro",
@@ -1844,9 +1844,9 @@ dependencies = [
 
 [[package]]
 name = "swift-bridge-build"
-version = "0.1.55"
+version = "0.1.56"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "7b8256d2d8c35795afeab117528f5e42b2706ca29b20f768929d458c7f245fdd"
+checksum = "1f96a36705ee16b655d0f53ef5881f042cdfcfbd793c225bfdcb9eba1da9cd7a"
 dependencies = [
  "proc-macro2",
  "swift-bridge-ir",
@@ -1856,9 +1856,9 @@ dependencies = [
 
 [[package]]
 name = "swift-bridge-ir"
-version = "0.1.55"
+version = "0.1.56"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "a28407ee88b57fac3e8c9314a0eefb1f63a3743cb0beef4b8d93189d5d8ce0f1"
+checksum = "cc7255396edbde79c6cd31f3884445015b0d6b5bdb556fb7a8f615bde8fcedc5"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -1867,9 +1867,9 @@ dependencies = [
 
 [[package]]
 name = "swift-bridge-macro"
-version = "0.1.55"
+version = "0.1.56"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e69ec9898b591cfcf473a584e98b54517400dcc67b0d3f8fdf2a099ce7971e3a"
+checksum = "6c1d6a6e436870d25f7e8eff31fc6537db8d56642113d24132ab55ac66ab300f"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -1879,7 +1879,7 @@ dependencies = [
 
 [[package]]
 name = "swoirenberg"
-version = "0.30.0-10"
+version = "0.32.0-1"
 dependencies = [
  "noir_rs",
  "regex",
