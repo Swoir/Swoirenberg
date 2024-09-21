@@ -1,7 +1,7 @@
 # Swoirenberg
 
-![Version](https://img.shields.io/badge/version-0.32.0--1-darkviolet)
-[![Noir](https://img.shields.io/badge/Noir-0.32.0--1-darkviolet)](https://github.com/AztecProtocol/aztec-packages/tree/master/noir)
+![Version](https://img.shields.io/badge/version-0.34.0--1-darkviolet)
+[![Noir](https://img.shields.io/badge/Noir-0.34.0--1-darkviolet)](https://github.com/AztecProtocol/aztec-packages/tree/master/noir)
 [![Swift 5](https://img.shields.io/badge/Swift-5-blue.svg)](https://developer.apple.com/swift/)
 [![License: Apache-2.0](https://img.shields.io/badge/License-Apache--2.0-green)](https://opensource.org/license/apache-2-0)
 
@@ -34,6 +34,7 @@ The result of the build process is located at `Frameworks/Swoirenberg.xcframewor
 
 - [Bartosz Nowak / BartolomeoDiaz](https://github.com/Okm165)
 - [Michael Elliot](https://x.com/michaelelliot)
+- [Théo Madzou](https://x.com/madztheo)
 
 ## Contributing
 
