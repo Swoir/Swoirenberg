@@ -1,6 +1,6 @@
 [package]
 name = "swoirenberg"
-version = "0.34.0-1" # This version should align with Noir
+version = "0.35.0-1" # This version should align with Noir
 authors = ["Bartosz Nowak", "Michael Elliot", "Theo Madzou"]
 repository = "https://github.com/Swoir/Swoirenberg.git"
 license = "Apache-2.0"
@@ -18,7 +18,7 @@ regex = "1.10.2"
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
 swift-bridge = "0.1"
-noir_rs = { git = "https://github.com/madztheo/noir_rs.git", branch = "v0.34.0", package = "noir_rs" }
+noir_rs = { git = "https://github.com/zkpassport/noir_rs.git", branch = "v0.35.0", package = "noir_rs" }
 
 [profile.release]
 strip = "symbols"
