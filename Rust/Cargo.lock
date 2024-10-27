@@ -4,8 +4,8 @@ version = 4
 
 [[package]]
 name = "acir"
-version = "0.51.0"
-source = "git+https://github.com/noir-lang/noir.git?tag=v0.35.0#2a0d211b92d002fa75855d4ba27267f8892dd52c"
+version = "0.52.0"
+source = "git+https://github.com/noir-lang/noir.git?tag=v0.36.0#801c71880ecf8386a26737a5d8bb5b4cb164b2ab"
 dependencies = [
  "acir_field",
  "base64 0.21.7",
@@ -19,8 +19,8 @@ dependencies = [
 
 [[package]]
 name = "acir_field"
-version = "0.51.0"
-source = "git+https://github.com/noir-lang/noir.git?tag=v0.35.0#2a0d211b92d002fa75855d4ba27267f8892dd52c"
+version = "0.52.0"
+source = "git+https://github.com/noir-lang/noir.git?tag=v0.36.0#801c71880ecf8386a26737a5d8bb5b4cb164b2ab"
 dependencies = [
  "ark-bn254",
  "ark-ff",
@@ -32,8 +32,8 @@ dependencies = [
 
 [[package]]
 name = "acvm"
-version = "0.51.0"
-source = "git+https://github.com/noir-lang/noir.git?tag=v0.35.0#2a0d211b92d002fa75855d4ba27267f8892dd52c"
+version = "0.52.0"
+source = "git+https://github.com/noir-lang/noir.git?tag=v0.36.0#801c71880ecf8386a26737a5d8bb5b4cb164b2ab"
 dependencies = [
  "acir",
  "acvm_blackbox_solver",
@@ -47,8 +47,8 @@ dependencies = [
 
 [[package]]
 name = "acvm_blackbox_solver"
-version = "0.51.0"
-source = "git+https://github.com/noir-lang/noir.git?tag=v0.35.0#2a0d211b92d002fa75855d4ba27267f8892dd52c"
+version = "0.52.0"
+source = "git+https://github.com/noir-lang/noir.git?tag=v0.36.0#801c71880ecf8386a26737a5d8bb5b4cb164b2ab"
 dependencies = [
  "acir",
  "blake2",
@@ -59,7 +59,6 @@ dependencies = [
  "num-bigint",
  "p256",
  "sha2",
- "sha3",
  "thiserror",
 ]
 
@@ -281,11 +280,12 @@ checksum = "8c3c1a368f70d6cf7302d78f8f7093da241fb8e8807c05cc9e51a125895a6d5b"
 
 [[package]]
 name = "bb_rs"
-version = "0.56.0"
-source = "git+https://github.com/madztheo/aztec-packages.git?branch=v0.56.0#9044ba397392482e5291d20a3c9a3c10baea7822"
+version = "0.58.0"
+source = "git+https://github.com/madztheo/aztec-packages.git?branch=v0.58.0#b1b4d1f4b28ae930157cabb7edcd2d4e0534e9f8"
 dependencies = [
  "bindgen",
  "cmake",
+ "num-bigint",
  "thiserror",
  "tracing",
  "tracing-subscriber",
@@ -362,8 +362,8 @@ dependencies = [
 
 [[package]]
 name = "bn254_blackbox_solver"
-version = "0.51.0"
-source = "git+https://github.com/noir-lang/noir.git?tag=v0.35.0#2a0d211b92d002fa75855d4ba27267f8892dd52c"
+version = "0.52.0"
+source = "git+https://github.com/noir-lang/noir.git?tag=v0.36.0#801c71880ecf8386a26737a5d8bb5b4cb164b2ab"
 dependencies = [
  "acir",
  "acvm_blackbox_solver",
@@ -378,8 +378,8 @@ dependencies = [
 
 [[package]]
 name = "brillig"
-version = "0.51.0"
-source = "git+https://github.com/noir-lang/noir.git?tag=v0.35.0#2a0d211b92d002fa75855d4ba27267f8892dd52c"
+version = "0.52.0"
+source = "git+https://github.com/noir-lang/noir.git?tag=v0.36.0#801c71880ecf8386a26737a5d8bb5b4cb164b2ab"
 dependencies = [
  "acir_field",
  "serde",
@@ -387,8 +387,8 @@ dependencies = [
 
 [[package]]
 name = "brillig_vm"
-version = "0.51.0"
-source = "git+https://github.com/noir-lang/noir.git?tag=v0.35.0#2a0d211b92d002fa75855d4ba27267f8892dd52c"
+version = "0.52.0"
+source = "git+https://github.com/noir-lang/noir.git?tag=v0.36.0#801c71880ecf8386a26737a5d8bb5b4cb164b2ab"
 dependencies = [
  "acir",
  "acvm_blackbox_solver",
@@ -1131,8 +1131,8 @@ dependencies = [
 
 [[package]]
 name = "nargo"
-version = "0.35.0"
-source = "git+https://github.com/zkpassport/noir_rs.git?branch=v0.35.0#c745b17203309c8da725f70394620cd12f41e745"
+version = "0.36.0"
+source = "git+https://github.com/zkpassport/noir_rs.git?branch=v0.36.0#749c25aef00e5fae91432c1ddcc411e4abecffd2"
 dependencies = [
  "acir",
  "acvm",
@@ -1181,8 +1181,8 @@ dependencies = [
 
 [[package]]
 name = "noir_rs"
-version = "0.35.0"
-source = "git+https://github.com/zkpassport/noir_rs.git?branch=v0.35.0#c745b17203309c8da725f70394620cd12f41e745"
+version = "0.36.0"
+source = "git+https://github.com/zkpassport/noir_rs.git?branch=v0.36.0#749c25aef00e5fae91432c1ddcc411e4abecffd2"
 dependencies = [
  "acir",
  "acvm",
@@ -1727,16 +1727,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "sha3"
-version = "0.10.8"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "75872d278a8f37ef87fa0ddbda7802605cb18344497949862c0d4dcb291eba60"
-dependencies = [
- "digest",
- "keccak",
-]
-
-[[package]]
 name = "sharded-slab"
 version = "0.1.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1855,7 +1845,7 @@ dependencies = [
 
 [[package]]
 name = "swoirenberg"
-version = "0.35.0-1"
+version = "0.36.0-1"
 dependencies = [
  "noir_rs",
  "regex",
