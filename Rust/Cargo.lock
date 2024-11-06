@@ -281,7 +281,7 @@ checksum = "8c3c1a368f70d6cf7302d78f8f7093da241fb8e8807c05cc9e51a125895a6d5b"
 [[package]]
 name = "bb_rs"
 version = "0.58.0"
-source = "git+https://github.com/madztheo/aztec-packages.git?branch=v0.58.0#b1b4d1f4b28ae930157cabb7edcd2d4e0534e9f8"
+source = "git+https://github.com/madztheo/aztec-packages.git?branch=v0.58.0#b968e846797481b7f1c2776649e78bb9e768198a"
 dependencies = [
  "bindgen",
  "cmake",
@@ -1997,7 +1997,7 @@ dependencies = [
 
 [[package]]
 name = "swoirenberg"
-version = "0.36.0-2"
+version = "0.36.0-4"
 dependencies = [
  "noir_rs",
  "regex",
