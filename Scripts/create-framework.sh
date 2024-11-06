@@ -32,9 +32,15 @@ function create_framework() {
         echo "    <key>CFBundleShortVersionString</key>"
         echo "    <string>0.36</string>"
         echo "    <key>CFBundleVersion</key>"
-        echo "    <string>2</string>"
-        echo "    <key>MinimumOSVersion</key>"
-        echo "    <string>14.0</string>"
+        echo "    <string>3</string>"
+        if [ "$fw" = "aarch64-apple-ios" ]; then
+            echo "    <key>MinimumOSVersion</key>"
+            echo "    <string>14.0</string>"
+        fi
+        if [ "$fw" = "macos-arm64" ]; then
+            echo "    <key>MinimumOSVersion</key>"
+            echo "    <string>10.15</string>"
+        fi
         echo "</dict>"
         echo "</plist>"
         } > ".artifacts/Frameworks/$fw/$FWNAME.framework/Info.plist"

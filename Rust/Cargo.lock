@@ -1997,7 +1997,7 @@ dependencies = [
 
 [[package]]
 name = "swoirenberg"
-version = "0.36.0-1"
+version = "0.36.0-2"
 dependencies = [
  "noir_rs",
  "regex",
