@@ -3,10 +3,10 @@
     {
       "identity" : "swoircore",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/Swoir/SwoirCore",
+      "location" : "https://github.com/Swoir/SwoirCore.git",
       "state" : {
-        "revision" : "1cb3a311e45d72727d01617685d2de625769b316",
-        "version" : "0.5.0"
+        "revision" : "8f1f53bde28494b38dc3632d272295da1e6ae970",
+        "version" : "0.6.0"
       }
     }
   ],

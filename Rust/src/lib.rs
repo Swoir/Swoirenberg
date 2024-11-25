@@ -14,7 +14,7 @@ mod ffi {
     extern "Rust" {
         type Proof;
         fn setup_srs_swift(circuit_bytecode: String, srs_path: Option<&str>) -> Option<u32>;
-        fn prove_swift(circuit_bytecode: String, initial_witness: Vec<i64>, proof_type: String, num_points: u32) -> Option<Proof>;
+        fn prove_swift(circuit_bytecode: String, initial_witness: Vec<String>, proof_type: String, num_points: u32) -> Option<Proof>;
         fn verify_swift(proof: Vec<u8>, vkey: Vec<u8>, proof_type: String, num_points: u32) -> Option<bool>;
         fn proof_data_ptr(&self) -> *const u8;
         fn proof_data_len(&self) -> usize;
@@ -54,11 +54,10 @@ impl Proof {
 ///
 /// # Returns
 /// - `Option<Proof>`: The generated proof and its associated verification key wrapped in a `Proof` struct. Returns `None` if the proof generation fails.
-pub fn prove_swift(circuit_bytecode: String, initial_witness: Vec<i64>, proof_type: String, num_points: u32) -> Option<Proof> {
+pub fn prove_swift(circuit_bytecode: String, initial_witness: Vec<String>, proof_type: String, num_points: u32) -> Option<Proof> {
     let initial_witness_vec: Vec<FieldElement> = initial_witness
         .into_iter()
-        .map(|f| f as i128)
-        .map(FieldElement::from)
+        .map(|s| FieldElement::try_from_str(&s).unwrap())
         .collect();
     let mut initial_witness = WitnessMap::new();
     for (i, witness) in initial_witness_vec.into_iter().enumerate() {

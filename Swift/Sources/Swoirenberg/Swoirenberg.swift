@@ -12,13 +12,16 @@ public class Swoirenberg: SwoirBackendProtocol {
         return result
     }
 
-    public static func prove(bytecode: Data, witnessMap: [Int64], proof_type: String, num_points: UInt32) throws -> SwoirCore.Proof {
+    public static func prove(bytecode: Data, witnessMap: [String], proof_type: String, num_points: UInt32) throws -> SwoirCore.Proof {
         if bytecode.isEmpty { throw SwoirBackendError.emptyBytecode }
         if witnessMap.isEmpty { throw SwoirBackendError.emptyWitnessMap }
         let bytecodeBase64 = bytecode.base64EncodedString()
-        let witnessMapRustVec = RustVec<Int64>(from: witnessMap)
+        let witnessMapRustVec = RustVec<RustString>.init()
+        for witness in witnessMap {
+            witnessMapRustVec.push(value: witness.intoRustString())
+        }
 
-        guard let proofResult = prove_swift(bytecodeBase64, witnessMapRustVec, proof_type, num_points) else {
+        guard let proofResult = prove_swift(bytecodeBase64.intoRustString(), witnessMapRustVec, proof_type.intoRustString(), num_points) else {
             throw SwoirBackendError.errorProving("Error generating proof")
         }
         let proof = SwoirCore.Proof(

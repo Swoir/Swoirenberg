@@ -5,7 +5,7 @@ final class SwoirenbergTests: XCTestCase {
     func testProveAndVerify() throws {
         let circuitBytecodeBase64 = "H4sIAAAAAAAA/62QQQ6AMAgErfFBUKCFm1+xsf3/E9TYxka96SQEwmGyWTecjPu44aLdc93wDWzOu5cgMOfoMxIu4C2pAEsKioqisnolysoaLVkEQ6aMRYxKFY//ZYQj29T10XfhXv4PNvD4VlxNAQAA"
         let circuitBytecode = Data(base64Encoded: circuitBytecodeBase64)!
-        let witnessMap = [Int64(3), Int64(5), Int64(15)]
+        let witnessMap = ["3", "5", "15"]
 
         let num_points = try Swoirenberg.setup_srs(bytecode: circuitBytecode)
 
@@ -22,7 +22,7 @@ final class SwoirenbergTests: XCTestCase {
     func testProveAndVerifyHonk() throws {
         let circuitBytecodeBase64 = "H4sIAAAAAAAA/62QQQ6AMAgErfFBUKCFm1+xsf3/E9TYxka96SQEwmGyWTecjPu44aLdc93wDWzOu5cgMOfoMxIu4C2pAEsKioqisnolysoaLVkEQ6aMRYxKFY//ZYQj29T10XfhXv4PNvD4VlxNAQAA"
         let circuitBytecode = Data(base64Encoded: circuitBytecodeBase64)!
-        let witnessMap = [Int64(3), Int64(5), Int64(15)]
+        let witnessMap = ["0x3", "0x5", "0xf"]
 
         let num_points = try Swoirenberg.setup_srs(bytecode: circuitBytecode)
 
