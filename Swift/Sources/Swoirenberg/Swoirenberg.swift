@@ -3,16 +3,16 @@ import SwoirCore
 
 public class Swoirenberg: SwoirBackendProtocol {
 
-    public static func setup_srs(bytecode: Data, srs_path: String? = nil) throws -> UInt32 {
+    public static func setup_srs(bytecode: Data, srs_path: String? = nil, recursive: Bool = false) throws -> UInt32 {
         if bytecode.isEmpty { throw SwoirBackendError.emptyBytecode }
         let bytecodeBase64 = bytecode.base64EncodedString()
-        guard let result = setup_srs_swift(bytecodeBase64, srs_path) else {
+        guard let result = setup_srs_swift(bytecodeBase64, srs_path, recursive) else {
             throw SwoirBackendError.errorSettingUpSRS
         }
         return result
     }
 
-    public static func prove(bytecode: Data, witnessMap: [String], proof_type: String, num_points: UInt32) throws -> SwoirCore.Proof {
+    public static func prove(bytecode: Data, witnessMap: [String], proof_type: String, recursive: Bool) throws -> SwoirCore.Proof {
         if bytecode.isEmpty { throw SwoirBackendError.emptyBytecode }
         if witnessMap.isEmpty { throw SwoirBackendError.emptyWitnessMap }
         let bytecodeBase64 = bytecode.base64EncodedString()
@@ -21,7 +21,7 @@ public class Swoirenberg: SwoirBackendProtocol {
             witnessMapRustVec.push(value: witness.intoRustString())
         }
 
-        guard let proofResult = prove_swift(bytecodeBase64.intoRustString(), witnessMapRustVec, proof_type.intoRustString(), num_points) else {
+        guard let proofResult = prove_swift(bytecodeBase64.intoRustString(), witnessMapRustVec, proof_type.intoRustString(), recursive) else {
             throw SwoirBackendError.errorProving("Error generating proof")
         }
         let proof = SwoirCore.Proof(
@@ -30,11 +30,11 @@ public class Swoirenberg: SwoirBackendProtocol {
         return proof
     }
 
-    public static func verify(proof: SwoirCore.Proof, proof_type: String, num_points: UInt32) throws -> Bool {
+    public static func verify(proof: SwoirCore.Proof, proof_type: String) throws -> Bool {
         if proof.proof.isEmpty { throw SwoirBackendError.emptyProofData }
         if proof.vkey.isEmpty { throw SwoirBackendError.emptyVerificationKey }
 
-        let verified = verify_swift(RustVec<UInt8>(from: proof.proof), RustVec<UInt8>(from: proof.vkey), proof_type, num_points) ?? false
+        let verified = verify_swift(RustVec<UInt8>(from: proof.proof), RustVec<UInt8>(from: proof.vkey), proof_type) ?? false
         return verified
     }
 }
