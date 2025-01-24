@@ -30,7 +30,7 @@ function create_framework() {
         echo "    <key>CFBundleExecutable</key>"
         echo "    <string>$FWNAME</string>"
         echo "    <key>CFBundleShortVersionString</key>"
-        echo "    <string>1.0.0-beta.1</string>"
+        echo "    <string>1.0.0</string>"
         echo "    <key>CFBundleVersion</key>"
         echo "    <string>1</string>"
         if [ "$fw" = "aarch64-apple-ios" ]; then

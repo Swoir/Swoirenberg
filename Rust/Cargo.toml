@@ -1,6 +1,6 @@
 [package]
 name = "swoirenberg"
-version = "1.0.0-beta.1-1"
+version = "1.0.0-beta.1-2"
 authors = ["Bartosz Nowak", "Michael Elliot", "Theo Madzou"]
 repository = "https://github.com/Swoir/Swoirenberg.git"
 license = "Apache-2.0"
