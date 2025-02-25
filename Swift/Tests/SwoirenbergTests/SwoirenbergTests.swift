@@ -7,12 +7,12 @@ final class SwoirenbergTests: XCTestCase {
         let circuitBytecode = Data(base64Encoded: circuitBytecodeBase64)!
         let witnessMap = ["0x3", "0x5", "0xf"]
 
-        let num_points = try Swoirenberg.setup_srs(bytecode: circuitBytecode)
+        let num_points = try Swoirenberg.setup_srs(bytecode: circuitBytecode, recursive: true)
 
-        let proof = try Swoirenberg.prove(bytecode: circuitBytecode, witnessMap: witnessMap, proof_type: "honk", recursive: false)
-        XCTAssertEqual(proof.proof.count, 14340, "Invalid proof returned")
+        let proof = try Swoirenberg.prove(bytecode: circuitBytecode, witnessMap: witnessMap, proof_type: "honk", recursive: true)
+        XCTAssertEqual(proof.proof.count, 14724, "Invalid proof returned")
         XCTAssertEqual(proof.vkey.count, 1825, "Invalid verification key returned")
-        XCTAssertEqual(proof.vkey.sha256(), "612dbe8d1d24a693a2f676b1f4f72efafb21e01f189aaa68e4e1ad3975ff5a61", "Invalid verification key returned")
+        XCTAssertEqual(proof.vkey.sha256(), "f07522f69aa758da9f65c45651822789d953d53eb5c8153686d9c4bc57012d3b", "Invalid verification key returned")
 
         let valid = try Swoirenberg.verify(proof: proof, proof_type: "honk")
         XCTAssertTrue(valid, "Failed to verify proof")
