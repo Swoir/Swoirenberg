@@ -17,4 +17,14 @@ final class SwoirenbergTests: XCTestCase {
         let valid = try Swoirenberg.verify(proof: proof, proof_type: "honk")
         XCTAssertTrue(valid, "Failed to verify proof")
     }
+
+    func testExecute() throws {
+        let circuitBytecodeBase64 = "H4sIAAAAAAAA/62QQQqAMAwErfigpEna5OZXLLb/f4KKLZbiTQdCQg7Dsm66mc9x00O717rhG9ico5cgMOfoMxJu4C2pAEsKioqisnslysoaLVkEQ6aMRYxKFc//ZYQr29L10XfhXv4jB52E+OpMAQAA"
+        let circuitBytecode = Data(base64Encoded: circuitBytecodeBase64)!
+        let witnessMap = ["3", "5"]
+
+        let solvedWitness = try Swoirenberg.execute(bytecode: circuitBytecode, witnessMap: witnessMap)
+        // 3 x 5 = 15 (0xf) and this should be the third value in the witness map
+        XCTAssertEqual(solvedWitness, ["0x0000000000000000000000000000000000000000000000000000000000000003", "0x0000000000000000000000000000000000000000000000000000000000000005", "0x000000000000000000000000000000000000000000000000000000000000000f"])
+    }
 }

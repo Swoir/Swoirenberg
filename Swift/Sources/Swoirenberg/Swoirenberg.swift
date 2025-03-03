@@ -37,4 +37,19 @@ public class Swoirenberg: SwoirBackendProtocol {
         let verified = verify_swift(RustVec<UInt8>(from: proof.proof), RustVec<UInt8>(from: proof.vkey), proof_type) ?? false
         return verified
     }
+
+    public static func execute(bytecode: Data, witnessMap: [String]) throws -> [String] {
+        if bytecode.isEmpty { throw SwoirBackendError.emptyBytecode }
+        if witnessMap.isEmpty { throw SwoirBackendError.emptyWitnessMap }
+        let bytecodeBase64 = bytecode.base64EncodedString()
+        let witnessMapRustVec = RustVec<RustString>.init()
+        for witness in witnessMap {
+            witnessMapRustVec.push(value: witness.intoRustString())
+        }
+
+        guard let witnessResult = execute_swift(bytecodeBase64.intoRustString(), witnessMapRustVec) else {
+            throw SwoirBackendError.errorExecuting("Error executing circuit")
+        }
+        return witnessResult.map { $0.as_str().toString() }
+    }
 }
