@@ -3,16 +3,24 @@ import SwoirCore
 
 public class Swoirenberg: SwoirBackendProtocol {
 
-    public static func setup_srs(bytecode: Data, srs_path: String? = nil, recursive: Bool = false) throws -> UInt32 {
-        if bytecode.isEmpty { throw SwoirBackendError.emptyBytecode }
-        let bytecodeBase64 = bytecode.base64EncodedString()
-        guard let result = setup_srs_swift(bytecodeBase64, srs_path, recursive) else {
+    public static func setup_srs(circuit_size: UInt32, srs_path: String? = nil) throws -> UInt32 {
+        if circuit_size == 0 { throw SwoirBackendError.nonPositiveCircuitSize }
+        guard let result = setup_srs_swift(circuit_size, srs_path) else {
             throw SwoirBackendError.errorSettingUpSRS
         }
         return result
     }
 
-    public static func prove(bytecode: Data, witnessMap: [String], proof_type: String, recursive: Bool) throws -> SwoirCore.Proof {
+    public static func setup_srs_from_bytecode(bytecode: Data, srs_path: String? = nil, recursive: Bool = false) throws -> UInt32 {
+        if bytecode.isEmpty { throw SwoirBackendError.emptyBytecode }
+        let bytecodeBase64 = bytecode.base64EncodedString()
+        guard let result = setup_srs_from_bytecode_swift(bytecodeBase64, srs_path, recursive) else {
+            throw SwoirBackendError.errorSettingUpSRS
+        }
+        return result
+    }
+
+    public static func prove(bytecode: Data, witnessMap: [String], proof_type: String, recursive: Bool) throws -> Data {
         if bytecode.isEmpty { throw SwoirBackendError.emptyBytecode }
         if witnessMap.isEmpty { throw SwoirBackendError.emptyWitnessMap }
         let bytecodeBase64 = bytecode.base64EncodedString()
@@ -24,17 +32,14 @@ public class Swoirenberg: SwoirBackendProtocol {
         guard let proofResult = prove_swift(bytecodeBase64.intoRustString(), witnessMapRustVec, proof_type.intoRustString(), recursive) else {
             throw SwoirBackendError.errorProving("Error generating proof")
         }
-        let proof = SwoirCore.Proof(
-            proof: Data(bytes: proofResult.proof_data_ptr(), count: Int(proofResult.proof_data_len())),
-            vkey: Data(bytes: proofResult.vkey_data_ptr(), count: Int(proofResult.vkey_data_len())))
-        return proof
+        return Data(bytes: proofResult)
     }
 
-    public static func verify(proof: SwoirCore.Proof, proof_type: String) throws -> Bool {
-        if proof.proof.isEmpty { throw SwoirBackendError.emptyProofData }
-        if proof.vkey.isEmpty { throw SwoirBackendError.emptyVerificationKey }
+    public static func verify(proof: Data, vkey: Data, proof_type: String) throws -> Bool {
+        if proof.isEmpty { throw SwoirBackendError.emptyProofData }
+        if vkey.isEmpty { throw SwoirBackendError.emptyVerificationKey }
 
-        let verified = verify_swift(RustVec<UInt8>(from: proof.proof), RustVec<UInt8>(from: proof.vkey), proof_type) ?? false
+        let verified = verify_swift(RustVec<UInt8>(from: proof), RustVec<UInt8>(from: vkey), proof_type) ?? false
         return verified
     }
 
@@ -51,5 +56,14 @@ public class Swoirenberg: SwoirBackendProtocol {
             throw SwoirBackendError.errorExecuting("Error executing circuit")
         }
         return witnessResult.map { $0.as_str().toString() }
+    }
+
+    public static func get_verification_key(bytecode: Data, recursive: Bool) throws -> Data {
+        if bytecode.isEmpty { throw SwoirBackendError.emptyBytecode }
+        let bytecodeBase64 = bytecode.base64EncodedString()
+        guard let result = get_vkey_swift(bytecodeBase64.intoRustString(), recursive) else {
+            throw SwoirBackendError.errorGettingVerificationKey
+        }
+        return Data(bytes: result)
     }
 }

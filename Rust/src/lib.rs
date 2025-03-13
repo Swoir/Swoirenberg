@@ -1,39 +1,17 @@
 use noir_rs::{
-    barretenberg::{prove::prove_ultra_honk, srs::setup_srs, verify::verify_ultra_honk}, execute::execute, native_types::{Witness, WitnessMap}, AcirField, FieldElement
+    barretenberg::{prove::prove_ultra_honk, srs::{setup_srs, setup_srs_from_bytecode}, verify::verify_ultra_honk, utils::get_honk_verification_key}, execute::execute, native_types::{Witness, WitnessMap}, AcirField, FieldElement
 };
 
 // Expose functions using FFI and swift-bridge so we can call them in Swift
 #[swift_bridge::bridge]
 mod ffi {
     extern "Rust" {
-        type Proof;
-        fn setup_srs_swift(circuit_bytecode: String, srs_path: Option<&str>, recursive: bool) -> Option<u32>;
-        fn prove_swift(circuit_bytecode: String, initial_witness: Vec<String>, proof_type: String, recursive: bool) -> Option<Proof>;
+        fn setup_srs_swift(circuit_size: u32, srs_path: Option<&str>) -> Option<u32>;
+        fn setup_srs_from_bytecode_swift(circuit_bytecode: String, srs_path: Option<&str>, recursive: bool) -> Option<u32>;
+        fn prove_swift(circuit_bytecode: String, initial_witness: Vec<String>, proof_type: String, recursive: bool) -> Option<Vec<u8>>;
         fn verify_swift(proof: Vec<u8>, vkey: Vec<u8>, proof_type: String) -> Option<bool>;
         fn execute_swift(circuit_bytecode: String, initial_witness: Vec<String>) -> Option<Vec<String>>;
-        fn proof_data_ptr(&self) -> *const u8;
-        fn proof_data_len(&self) -> usize;
-        fn vkey_data_ptr(&self) -> *const u8;
-        fn vkey_data_len(&self) -> usize;
-    }
-}
-
-pub struct Proof {
-    pub proof: Vec<u8>,
-    pub vkey: Vec<u8>,
-}
-impl Proof {
-    pub fn proof_data_ptr(&self) -> *const u8 {
-        self.proof.as_ptr()
-    }
-    pub fn proof_data_len(&self) -> usize {
-        self.proof.len()
-    }
-    pub fn vkey_data_ptr(&self) -> *const u8 {
-        self.vkey.as_ptr()
-    }
-    pub fn vkey_data_len(&self) -> usize {
-        self.vkey.len()
+        fn get_vkey_swift(circuit_bytecode: String, recursive: bool) -> Option<Vec<u8>>;
     }
 }
 
@@ -48,8 +26,8 @@ impl Proof {
 /// - `proof_type`: The type of proof to be generated. Can only be "honk" at the moment.
 ///
 /// # Returns
-/// - `Option<Proof>`: The generated proof and its associated verification key wrapped in a `Proof` struct. Returns `None` if the proof generation fails.
-pub fn prove_swift(circuit_bytecode: String, initial_witness: Vec<String>, proof_type: String, recursive: bool) -> Option<Proof> {
+/// - `Option<Vec<u8>>`: The generated proof and its associated verification key wrapped in a `Proof` struct. Returns `None` if the proof generation fails.
+pub fn prove_swift(circuit_bytecode: String, initial_witness: Vec<String>, proof_type: String, recursive: bool) -> Option<Vec<u8>> {
     let initial_witness_vec: Vec<FieldElement> = initial_witness
         .into_iter()
         .map(|s| FieldElement::try_from_str(&s).unwrap())
@@ -60,11 +38,8 @@ pub fn prove_swift(circuit_bytecode: String, initial_witness: Vec<String>, proof
     }
 
     if proof_type == "honk" {
-        let (proof, vkey) = prove_ultra_honk(&circuit_bytecode, initial_witness, recursive).ok()?;
-        return Some(Proof {
-            proof,
-            vkey,
-        });
+        let proof = prove_ultra_honk(&circuit_bytecode, initial_witness, recursive).ok()?;
+        return Some(proof);
     } else {
         println!("Unsupported proof type");
         return None;
@@ -95,6 +70,21 @@ pub fn verify_swift(proof: Vec<u8>, vkey: Vec<u8>, proof_type: String) -> Option
 
 /// Sets up the SRS for the zkSNARK proof generation process.
 /// 
+/// This function sets up the SRS for the zkSNARK proof generation process using the provided circuit size and
+/// the path to the file where the SRS needs to be stored.
+/// 
+/// # Parameters
+/// - `circuit_size`: The size of the circuit.
+/// - `srs_path`: The path to the file where the SRS needs to be stored. If `None`, the SRS will be fetched online.
+/// 
+/// # Returns
+/// - `Option<u32>`: The size of the SRS needed for the circuit
+pub fn setup_srs_swift(circuit_size: u32, srs_path: Option<&str>) -> Option<u32> {
+    setup_srs(circuit_size, srs_path).ok()
+}
+
+/// Sets up the SRS for the zkSNARK proof generation process.
+/// 
 /// This function sets up the SRS for the zkSNARK proof generation process using the provided circuit bytecode as
 /// as a base to compute the circuit size and set up the SRS accordingly for the circuit.
 /// 
@@ -104,8 +94,8 @@ pub fn verify_swift(proof: Vec<u8>, vkey: Vec<u8>, proof_type: String) -> Option
 /// 
 /// # Returns
 /// - `Option<u32>`: The size of the SRS needed for the circuit
-pub fn setup_srs_swift(circuit_bytecode: String, srs_path: Option<&str>, recursive: bool) -> Option<u32> {
-    setup_srs(&circuit_bytecode, srs_path, recursive).ok()
+pub fn setup_srs_from_bytecode_swift(circuit_bytecode: String, srs_path: Option<&str>, recursive: bool) -> Option<u32> {
+    setup_srs_from_bytecode(&circuit_bytecode, srs_path, recursive).ok()
 }
 
 
@@ -133,4 +123,17 @@ pub fn execute_swift(circuit_bytecode: String, initial_witness: Vec<String>) -> 
     let witness_map = &witness.peek().into_iter().last()?.witness;
     let witness_vec = witness_map.clone().into_iter().map(|(i, val)| format!("0x{}", val.to_hex())).collect();
     Some(witness_vec)
+}
+
+/// Gets the verification key for the given circuit bytecode.
+/// 
+/// This function takes in the circuit bytecode, then computes the verification key for the circuit.
+/// 
+/// # Parameters
+/// - `circuit_bytecode`: The base64 encoded bytecode of the ACIR circuit against which the verification key needs to be computed.
+/// 
+/// # Returns
+/// - `Option<Vec<u8>>`: The verification key for the circuit wrapped in a `Vec<u8>`. Returns `None` if the verification key computation fails.
+pub fn get_vkey_swift(circuit_bytecode: String, recursive: bool) -> Option<Vec<u8>> {
+    get_honk_verification_key(&circuit_bytecode, recursive).ok()
 }
