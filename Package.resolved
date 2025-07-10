@@ -5,8 +5,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/Swoir/SwoirCore.git",
       "state" : {
-        "revision" : "942c61fddd19707e076e23c481999914e33f9a09",
-        "version" : "0.8.0"
+        "revision" : "35ce7e734bedca50b4266a0e9a64f57187891c46",
+        "version" : "0.9.0"
       }
     }
   ],
