@@ -398,7 +398,7 @@ checksum = "55248b47b0caf0546f7988906588779981c43bb1bc9d0c44087278f80cdb44ba"
 [[package]]
 name = "bb_rs"
 version = "1.0.0-nightly.20250701"
-source = "git+https://github.com/zkpassport/aztec-packages.git?branch=v1.0.0-nightly.20250701#6c37da86e623510b95e21bdcd650707f759384ce"
+source = "git+https://github.com/zkpassport/aztec-packages.git?branch=v1.0.0-nightly.20250701#0bdab36688b81075849008fde2375f81d49cadcb"
 dependencies = [
  "bindgen",
  "cmake",
@@ -1883,7 +1883,7 @@ dependencies = [
 [[package]]
 name = "noir_rs"
 version = "1.0.0-beta.7"
-source = "git+https://github.com/zkpassport/noir_rs.git?tag=v1.0.0-beta.7-2#d3884e894da9d4d5708f397aba460a81b877fb2c"
+source = "git+https://github.com/zkpassport/noir_rs.git?tag=v1.0.0-beta.7-3#d68bc351b901e379a1f76bdc7ccd81a845a45c9b"
 dependencies = [
  "acir",
  "acvm",

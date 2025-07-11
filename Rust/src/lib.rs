@@ -1,5 +1,5 @@
 use noir_rs::{
-    barretenberg::{prove::{prove_ultra_honk, prove_ultra_honk_keccak}, srs::{setup_srs, setup_srs_from_bytecode}, verify::{verify_ultra_honk, get_ultra_honk_verification_key, verify_ultra_keccak_honk, get_ultra_honk_keccak_verification_key}}, execute::execute, native_types::{Witness, WitnessMap}, AcirField, FieldElement
+    barretenberg::{prove::{prove_ultra_honk, prove_ultra_honk_keccak}, srs::{setup_srs, setup_srs_from_bytecode}, verify::{verify_ultra_honk, get_ultra_honk_verification_key, verify_ultra_honk_keccak, get_ultra_honk_keccak_verification_key}}, execute::execute, native_types::{Witness, WitnessMap}, AcirField, FieldElement
 };
 
 // Expose functions using FFI and swift-bridge so we can call them in Swift
@@ -66,7 +66,7 @@ pub fn verify_swift(proof: Vec<u8>, vkey: Vec<u8>, proof_type: String) -> Option
     if proof_type == "ultra_honk" {
         verify_ultra_honk(proof, vkey).ok()
     } else if proof_type == "ultra_honk_keccak" {
-        verify_ultra_keccak_honk(proof, vkey, false).ok()
+        verify_ultra_honk_keccak(proof, vkey, false).ok()
     } else {
         println!("Unsupported proof type");
         return None;
