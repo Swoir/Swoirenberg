@@ -8,10 +8,10 @@ mod ffi {
     extern "Rust" {
         fn setup_srs_swift(circuit_size: u32, srs_path: Option<&str>) -> Option<u32>;
         fn setup_srs_from_bytecode_swift(circuit_bytecode: String, srs_path: Option<&str>) -> Option<u32>;
-        fn prove_swift(circuit_bytecode: String, initial_witness: Vec<String>, proof_type: String, vkey: Vec<u8>) -> Option<Vec<u8>>;
+        fn prove_swift(circuit_bytecode: String, initial_witness: Vec<String>, proof_type: String, vkey: Vec<u8>, low_memory_mode: bool) -> Option<Vec<u8>>;
         fn verify_swift(proof: Vec<u8>, vkey: Vec<u8>, proof_type: String) -> Option<bool>;
         fn execute_swift(circuit_bytecode: String, initial_witness: Vec<String>) -> Option<Vec<String>>;
-        fn get_vkey_swift(circuit_bytecode: String, proof_type: String) -> Option<Vec<u8>>;
+        fn get_vkey_swift(circuit_bytecode: String, proof_type: String, low_memory_mode: bool) -> Option<Vec<u8>>;
     }
 }
 
@@ -28,7 +28,7 @@ mod ffi {
 ///
 /// # Returns
 /// - `Option<Vec<u8>>`: The generated proof and its associated verification key wrapped in a `Proof` struct. Returns `None` if the proof generation fails.
-pub fn prove_swift(circuit_bytecode: String, initial_witness: Vec<String>, proof_type: String, vkey: Vec<u8>) -> Option<Vec<u8>> {
+pub fn prove_swift(circuit_bytecode: String, initial_witness: Vec<String>, proof_type: String, vkey: Vec<u8>, low_memory_mode: bool) -> Option<Vec<u8>> {
     let initial_witness_vec: Vec<FieldElement> = initial_witness
         .into_iter()
         .map(|s| FieldElement::try_from_str(&s).unwrap())
@@ -39,10 +39,10 @@ pub fn prove_swift(circuit_bytecode: String, initial_witness: Vec<String>, proof
     }
 
     if proof_type == "ultra_honk" {
-        let proof = prove_ultra_honk(&circuit_bytecode, initial_witness, vkey).ok()?;
+        let proof = prove_ultra_honk(&circuit_bytecode, initial_witness, vkey, low_memory_mode).ok()?;
         return Some(proof);
     } else if proof_type == "ultra_honk_keccak" {
-        let proof = prove_ultra_honk_keccak(&circuit_bytecode, initial_witness, vkey, false).ok()?;
+        let proof = prove_ultra_honk_keccak(&circuit_bytecode, initial_witness, vkey, false, low_memory_mode).ok()?;
         return Some(proof);
     } else {
         println!("Unsupported proof type");
@@ -141,11 +141,11 @@ pub fn execute_swift(circuit_bytecode: String, initial_witness: Vec<String>) -> 
 /// 
 /// # Returns
 /// - `Option<Vec<u8>>`: The verification key for the circuit wrapped in a `Vec<u8>`. Returns `None` if the verification key computation fails.
-pub fn get_vkey_swift(circuit_bytecode: String, proof_type: String) -> Option<Vec<u8>> {
+pub fn get_vkey_swift(circuit_bytecode: String, proof_type: String, low_memory_mode: bool) -> Option<Vec<u8>> {
     if proof_type == "ultra_honk" {
-        get_ultra_honk_verification_key(&circuit_bytecode).ok()
+        get_ultra_honk_verification_key(&circuit_bytecode, low_memory_mode).ok()
     } else if proof_type == "ultra_honk_keccak" {
-        get_ultra_honk_keccak_verification_key(&circuit_bytecode, false).ok()
+        get_ultra_honk_keccak_verification_key(&circuit_bytecode, false, low_memory_mode).ok()
     } else {
         println!("Unsupported proof type");
         return None;
