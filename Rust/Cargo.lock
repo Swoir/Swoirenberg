@@ -392,8 +392,8 @@ checksum = "55248b47b0caf0546f7988906588779981c43bb1bc9d0c44087278f80cdb44ba"
 
 [[package]]
 name = "bb_rs"
-version = "1.0.0-nightly.20250716"
-source = "git+https://github.com/zkpassport/aztec-packages.git?branch=v1.0.0-nightly.20250716#9d94e356bd639bb3642da0bf0d4066d4776ba212"
+version = "1.0.0-nightly.20250723"
+source = "git+https://github.com/zkpassport/aztec-packages.git?branch=v1.0.0-nightly.20250723#b40d35135cdef313267060ea89970811d01a38e6"
 dependencies = [
  "bindgen",
  "cmake",
@@ -1899,7 +1899,7 @@ dependencies = [
 [[package]]
 name = "noir_rs"
 version = "1.0.0-beta.8"
-source = "git+https://github.com/zkpassport/noir_rs.git?tag=v1.0.0-beta.8-2#1a94e69dafbc532a0de78baea47d897940210e73"
+source = "git+https://github.com/zkpassport/noir_rs.git?tag=v1.0.0-beta.8-3#4d6760a6cc02eadd077e74191b07347626a58ac9"
 dependencies = [
  "acir",
  "acvm",
@@ -3263,7 +3263,7 @@ dependencies = [
 
 [[package]]
 name = "swoirenberg"
-version = "1.0.0-beta.8-2"
+version = "1.0.0-beta.8-3"
 dependencies = [
  "noir_rs",
  "regex",

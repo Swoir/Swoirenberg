@@ -11,9 +11,9 @@ final class SwoirenbergTests: XCTestCase {
 
         let vkey = try Swoirenberg.get_verification_key(bytecode: circuitBytecode, proof_type: "ultra_honk")
         let proof = try Swoirenberg.prove(bytecode: circuitBytecode, witnessMap: witnessMap, proof_type: "ultra_honk", vkey: vkey)
-        XCTAssertEqual(proof.count, 16256, "Invalid proof returned")
-        XCTAssertEqual(vkey.count, 1760, "Invalid verification key returned")
-        XCTAssertEqual(vkey.sha256(), "9a2dae5ee6267442da4223f6274d47aa5714d674e72a2effd0073ff9a7aa41a0", "Invalid verification key returned")
+        XCTAssertEqual(proof.count, 16288, "Invalid proof returned")
+        XCTAssertEqual(vkey.count, 1816, "Invalid verification key returned")
+        XCTAssertEqual(vkey.sha256(), "5d655dd393ef64156446080db6521c8f5af9ab3798c314cd6ed02cb72d41f7cb", "Invalid verification key returned")
 
         let valid = try Swoirenberg.verify(proof: proof, vkey: vkey, proof_type: "ultra_honk")
         XCTAssertTrue(valid, "Failed to verify proof")
@@ -28,9 +28,9 @@ final class SwoirenbergTests: XCTestCase {
 
         let vkey = try Swoirenberg.get_verification_key(bytecode: circuitBytecode, proof_type: "ultra_honk_keccak")
         let proof = try Swoirenberg.prove(bytecode: circuitBytecode, witnessMap: witnessMap, proof_type: "ultra_honk_keccak", vkey: vkey)
-        XCTAssertEqual(proof.count, 16256, "Invalid proof returned")
-        XCTAssertEqual(vkey.count, 1760, "Invalid verification key returned")
-        XCTAssertEqual(vkey.sha256(), "9a2dae5ee6267442da4223f6274d47aa5714d674e72a2effd0073ff9a7aa41a0", "Invalid verification key returned")
+        XCTAssertEqual(proof.count, 16288, "Invalid proof returned")
+        XCTAssertEqual(vkey.count, 1816, "Invalid verification key returned")
+        XCTAssertEqual(vkey.sha256(), "5d655dd393ef64156446080db6521c8f5af9ab3798c314cd6ed02cb72d41f7cb", "Invalid verification key returned")
 
         let valid = try Swoirenberg.verify(proof: proof, vkey: vkey, proof_type: "ultra_honk_keccak")
         XCTAssertTrue(valid, "Failed to verify proof")
