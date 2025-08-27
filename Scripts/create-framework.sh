@@ -35,7 +35,7 @@ function create_framework() {
         echo "    <string>7</string>"
         if [ "$fw" = "aarch64-apple-ios" ]; then
             echo "    <key>MinimumOSVersion</key>"
-            echo "    <string>15.0</string>"
+            echo "    <string>15.2</string>"
         fi
         if [ "$fw" = "macos-arm64" ]; then
             echo "    <key>MinimumOSVersion</key>"
