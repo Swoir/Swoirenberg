@@ -32,7 +32,7 @@ function create_framework() {
         echo "    <key>CFBundleShortVersionString</key>"
         echo "    <string>1.0.0</string>"
         echo "    <key>CFBundleVersion</key>"
-        echo "    <string>7</string>"
+        echo "    <string>14</string>"
         if [ "$fw" = "aarch64-apple-ios" ]; then
             echo "    <key>MinimumOSVersion</key>"
             echo "    <string>15.2</string>"

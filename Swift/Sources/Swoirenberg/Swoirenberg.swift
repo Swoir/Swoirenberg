@@ -20,7 +20,7 @@ public class Swoirenberg: SwoirBackendProtocol {
         return result
     }
 
-    public static func prove(bytecode: Data, witnessMap: [String], proof_type: String, vkey: Data, low_memory_mode: Bool? = false) throws -> Data {
+    public static func prove(bytecode: Data, witnessMap: [String], proof_type: String, vkey: Data, low_memory_mode: Bool? = false, storage_cap: UInt64? = nil) throws -> Data {
         if bytecode.isEmpty { throw SwoirBackendError.emptyBytecode }
         if witnessMap.isEmpty { throw SwoirBackendError.emptyWitnessMap }
         let bytecodeBase64 = bytecode.base64EncodedString()
@@ -29,10 +29,10 @@ public class Swoirenberg: SwoirBackendProtocol {
             witnessMapRustVec.push(value: witness.intoRustString())
         }
 
-        guard let proofResult = prove_swift(bytecodeBase64.intoRustString(), witnessMapRustVec, proof_type.intoRustString(), RustVec<UInt8>(from: vkey), low_memory_mode ?? false) else {
+        guard let proofResult = prove_swift(bytecodeBase64.intoRustString(), witnessMapRustVec, proof_type.intoRustString(), RustVec<UInt8>(from: vkey), low_memory_mode ?? false, storage_cap ?? 0) else {
             throw SwoirBackendError.errorProving("Error generating proof")
         }
-        return Data(bytes: proofResult)
+        return Data(proofResult)
     }
 
     public static func verify(proof: Data, vkey: Data, proof_type: String) throws -> Bool {
@@ -58,12 +58,12 @@ public class Swoirenberg: SwoirBackendProtocol {
         return witnessResult.map { $0.as_str().toString() }
     }
 
-    public static func get_verification_key(bytecode: Data, proof_type: String, low_memory_mode: Bool? = false) throws -> Data {
+    public static func get_verification_key(bytecode: Data, proof_type: String, low_memory_mode: Bool? = false, storage_cap: UInt64? = nil) throws -> Data {
         if bytecode.isEmpty { throw SwoirBackendError.emptyBytecode }
         let bytecodeBase64 = bytecode.base64EncodedString()
-        guard let result = get_vkey_swift(bytecodeBase64.intoRustString(), proof_type.intoRustString(), low_memory_mode ?? false) else {
+        guard let result = get_vkey_swift(bytecodeBase64.intoRustString(), proof_type.intoRustString(), low_memory_mode ?? false, storage_cap ?? 0) else {
             throw SwoirBackendError.errorGettingVerificationKey
         }
-        return Data(bytes: result)
+        return Data(result)
     }
 }
