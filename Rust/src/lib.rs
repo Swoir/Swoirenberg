@@ -8,9 +8,9 @@ mod ffi {
     extern "Rust" {
         fn setup_srs_swift(circuit_size: u32, srs_path: Option<&str>) -> Option<u32>;
         fn setup_srs_from_bytecode_swift(circuit_bytecode: String, srs_path: Option<&str>) -> Option<u32>;
-        fn prove_swift(circuit_bytecode: String, initial_witness: Vec<String>, proof_type: String, vkey: Vec<u8>, low_memory_mode: bool, storage_cap: u64) -> Option<Vec<u8>>;
+        fn prove_swift(circuit_bytecode: String, initial_witness: Vec<String>, proof_type: String, vkey: Vec<u8>, low_memory_mode: bool, storage_cap: u64) -> Result<Vec<u8>, String>;
         fn verify_swift(proof: Vec<u8>, vkey: Vec<u8>, proof_type: String) -> Option<bool>;
-        fn execute_swift(circuit_bytecode: String, initial_witness: Vec<String>) -> Option<Vec<String>>;
+        fn execute_swift(circuit_bytecode: String, initial_witness: Vec<String>) -> Result<Vec<String>, String>;
         fn get_vkey_swift(circuit_bytecode: String, proof_type: String, low_memory_mode: bool, storage_cap: u64) -> Option<Vec<u8>>;
     }
 }
@@ -27,26 +27,26 @@ mod ffi {
 /// - `vkey`: The verification key for the circuit.
 ///
 /// # Returns
-/// - `Option<Vec<u8>>`: The generated proof and its associated verification key wrapped in a `Proof` struct. Returns `None` if the proof generation fails.
-pub fn prove_swift(circuit_bytecode: String, initial_witness: Vec<String>, proof_type: String, vkey: Vec<u8>, low_memory_mode: bool, storage_cap: u64) -> Option<Vec<u8>> {
+/// - `Result<Vec<u8>, String>`: The generated proof and its associated verification key wrapped in a `Proof` struct. Returns an error message if the proof generation fails.
+pub fn prove_swift(circuit_bytecode: String, initial_witness: Vec<String>, proof_type: String, vkey: Vec<u8>, low_memory_mode: bool, storage_cap: u64) -> Result<Vec<u8>, String> {
     let initial_witness_vec: Vec<FieldElement> = initial_witness
         .into_iter()
-        .map(|s| FieldElement::try_from_str(&s).unwrap())
-        .collect();
+        .map(|s| FieldElement::try_from_str(&s).ok_or_else(|| format!("Failed to parse witness: {}", s)))
+        .collect::<Result<Vec<_>, String>>()?;
+
     let mut initial_witness = WitnessMap::new();
     for (i, witness) in initial_witness_vec.into_iter().enumerate() {
         initial_witness.insert(Witness(i as u32), witness);
     }
 
     if proof_type == "ultra_honk" {
-        let proof = prove_ultra_honk(&circuit_bytecode, initial_witness, vkey, low_memory_mode, Some(storage_cap)).ok()?;
-        return Some(proof);
+        prove_ultra_honk(&circuit_bytecode, initial_witness, vkey, low_memory_mode, Some(storage_cap))
+            .map_err(|e| format!("Proof generation failed: {}", e))
     } else if proof_type == "ultra_honk_keccak" {
-        let proof = prove_ultra_honk_keccak(&circuit_bytecode, initial_witness, vkey, false, low_memory_mode, Some(storage_cap)).ok()?;
-        return Some(proof);
+        prove_ultra_honk_keccak(&circuit_bytecode, initial_witness, vkey, false, low_memory_mode, Some(storage_cap))
+            .map_err(|e| format!("Proof generation failed: {}", e))
     } else {
-        println!("Unsupported proof type");
-        return None;
+        Err("Unsupported proof type".to_string())
     }
 }
 
@@ -114,21 +114,30 @@ pub fn setup_srs_from_bytecode_swift(circuit_bytecode: String, srs_path: Option<
 /// - `initial_witness`: The initial witness values represented as a vector of i64.
 /// 
 /// # Returns
-/// - `Option<Vec<String>>`: The witness values returned by the circuit wrapped in a `Vec<String>`. Returns `None` if the execution fails.
-pub fn execute_swift(circuit_bytecode: String, initial_witness: Vec<String>) -> Option<Vec<String>> {
+/// - `Result<Vec<String>, String>`: The witness values returned by the circuit wrapped in a `Vec<String>`. Returns an error message if the execution fails.
+pub fn execute_swift(circuit_bytecode: String, initial_witness: Vec<String>) -> Result<Vec<String>, String> {
     let initial_witness_vec: Vec<FieldElement> = initial_witness
-    .into_iter()
-    .map(|s| FieldElement::try_from_str(&s).unwrap())
-    .collect();
+        .into_iter()
+        .map(|s| FieldElement::try_from_str(&s).ok_or_else(|| format!("Failed to parse witness: {}", s)))
+        .collect::<Result<Vec<_>, String>>()?;
+
     let mut initial_witness_final = WitnessMap::new();
     for (i, witness) in initial_witness_vec.into_iter().enumerate() {
         initial_witness_final.insert(Witness(i as u32), witness);
     }
 
-    let witness = execute(&circuit_bytecode, initial_witness_final).ok()?;
-    let witness_map = &witness.peek().into_iter().last()?.witness;
-    let witness_vec = witness_map.clone().into_iter().map(|(i, val)| format!("0x{}", val.to_hex())).collect();
-    Some(witness_vec)
+    let witness = execute(&circuit_bytecode, initial_witness_final)
+        .map_err(|e| format!("Circuit execution failed: {}", e))?;
+
+    let witness_map = &witness.peek().into_iter().last()
+        .ok_or("No witness returned")?
+        .witness;
+
+    let witness_vec = witness_map.clone().into_iter()
+        .map(|(_, val)| format!("0x{}", val.to_hex()))
+        .collect();
+
+    Ok(witness_vec)
 }
 
 /// Gets the verification key for the given circuit bytecode.

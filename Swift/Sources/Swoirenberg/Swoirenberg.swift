@@ -29,10 +29,12 @@ public class Swoirenberg: SwoirBackendProtocol {
             witnessMapRustVec.push(value: witness.intoRustString())
         }
 
-        guard let proofResult = prove_swift(bytecodeBase64.intoRustString(), witnessMapRustVec, proof_type.intoRustString(), RustVec<UInt8>(from: vkey), low_memory_mode ?? false, storage_cap ?? 0) else {
-            throw SwoirBackendError.errorProving("Error generating proof")
+        do {
+            let proofResult = try prove_swift(bytecodeBase64.intoRustString(), witnessMapRustVec, proof_type.intoRustString(), RustVec<UInt8>(from: vkey), low_memory_mode ?? false, storage_cap ?? 0)
+            return Data(bytes: proofResult)
+        } catch let error {
+            throw SwoirBackendError.errorProving(error.localizedDescription)
         }
-        return Data(proofResult)
     }
 
     public static func verify(proof: Data, vkey: Data, proof_type: String) throws -> Bool {
@@ -52,10 +54,12 @@ public class Swoirenberg: SwoirBackendProtocol {
             witnessMapRustVec.push(value: witness.intoRustString())
         }
 
-        guard let witnessResult = execute_swift(bytecodeBase64.intoRustString(), witnessMapRustVec) else {
-            throw SwoirBackendError.errorExecuting("Error executing circuit")
+        do {
+            let witnessResult = try execute_swift(bytecodeBase64.intoRustString(), witnessMapRustVec)
+            return witnessResult.map { $0.as_str().toString() }
+        } catch let error {
+            throw SwoirBackendError.errorExecuting(error.localizedDescription)
         }
-        return witnessResult.map { $0.as_str().toString() }
     }
 
     public static func get_verification_key(bytecode: Data, proof_type: String, low_memory_mode: Bool? = false, storage_cap: UInt64? = nil) throws -> Data {
