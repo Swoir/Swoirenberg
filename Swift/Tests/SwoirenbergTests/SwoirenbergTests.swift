@@ -3,7 +3,7 @@ import XCTest
 
 final class SwoirenbergTests: XCTestCase {
     func testProveAndVerify() throws {
-        let circuitBytecodeBase64 = "H4sIAAAAAAAA/42NsQmAMBBF74KDWGqnOIIIVmJpYyHYWChiZ5kRxAWcQnScdJY29gZNSAgp8or7x93/fIQfT2jfdAPhiqCQuw9OoBxmLmqLicVbeJTZTmlVB8mVz+e4pOxZb/4n7h2fVy9Ey93kBZmTjiLsAAAA"
+        let circuitBytecodeBase64 = "H4sIAAAAAAAA/4XMPQ5AMBiA4aqLGNmIE4hITGIUiUHCYPCTshh7g37tYDWYHEDYXaSb0WLXE/DObx6dw7TUedVgoKvX9yUZ0pK0AsRpoO80pAE/DbuIiHRma4+DjdIkM90rHI8OfPmIW234F0JcSZgx9gL3WmBNjQAAAA=="
         let circuitBytecode = Data(base64Encoded: circuitBytecodeBase64)!
         let witnessMap = ["0x3", "0x5", "0xf"]
 
@@ -12,16 +12,16 @@ final class SwoirenbergTests: XCTestCase {
 
         let vkey = try Swoirenberg.get_verification_key(bytecode: circuitBytecode, proof_type: "ultra_honk")
         let proof = try Swoirenberg.prove(bytecode: circuitBytecode, witnessMap: witnessMap, proof_type: "ultra_honk", vkey: vkey)
-        XCTAssertEqual(proof.count, 16288, "Invalid proof returned")
+        XCTAssertEqual(proof.count, 16036, "Invalid proof returned")
         XCTAssertEqual(vkey.count, 3680, "Invalid verification key returned")
-        XCTAssertEqual(vkey.sha256(), "8826f473e435f9292db370d9497f9a58488ddbe141b9fdacdd77ea07cada1a8a", "Invalid verification key returned")
+        XCTAssertEqual(vkey.sha256(), "5ccf2ea73cfe518309d753df1f52ee1acffcc0ebce025c9303abd9bea2ee9312", "Invalid verification key returned")
 
         let valid = try Swoirenberg.verify(proof: proof, vkey: vkey, proof_type: "ultra_honk")
         XCTAssertTrue(valid, "Failed to verify proof")
     }
 
     func testProveAndVerifyKeccak() throws {
-        let circuitBytecodeBase64 = "H4sIAAAAAAAA/42NsQmAMBBF74KDWGqnOIIIVmJpYyHYWChiZ5kRxAWcQnScdJY29gZNSAgp8or7x93/fIQfT2jfdAPhiqCQuw9OoBxmLmqLicVbeJTZTmlVB8mVz+e4pOxZb/4n7h2fVy9Ey93kBZmTjiLsAAAA"
+        let circuitBytecodeBase64 = "H4sIAAAAAAAA/4XMPQ5AMBiA4aqLGNmIE4hITGIUiUHCYPCTshh7g37tYDWYHEDYXaSb0WLXE/DObx6dw7TUedVgoKvX9yUZ0pK0AsRpoO80pAE/DbuIiHRma4+DjdIkM90rHI8OfPmIW234F0JcSZgx9gL3WmBNjQAAAA=="
         let circuitBytecode = Data(base64Encoded: circuitBytecodeBase64)!
         let witnessMap = ["0x3", "0x5", "0xf"]
 
@@ -30,16 +30,16 @@ final class SwoirenbergTests: XCTestCase {
 
         let vkey = try Swoirenberg.get_verification_key(bytecode: circuitBytecode, proof_type: "ultra_honk_keccak")
         let proof = try Swoirenberg.prove(bytecode: circuitBytecode, witnessMap: witnessMap, proof_type: "ultra_honk_keccak", vkey: vkey)
-        XCTAssertEqual(proof.count, 5216, "Invalid proof returned")
+        XCTAssertEqual(proof.count, 4964, "Invalid proof returned")
         XCTAssertEqual(vkey.count, 1888, "Invalid verification key returned")
-        XCTAssertEqual(vkey.sha256(), "2b4fcd1aac6944bcf4578f2e484b399329ad23d0591737ca4c745b7562d8d33f", "Invalid verification key returned")
+        XCTAssertEqual(vkey.sha256(), "bff0cdab27ece0f8b843353a145933c507f2c3733516e1fb8c7d91a39d4c043e", "Invalid verification key returned")
 
         let valid = try Swoirenberg.verify(proof: proof, vkey: vkey, proof_type: "ultra_honk_keccak")
         XCTAssertTrue(valid, "Failed to verify proof")
     }
 
     func testExecute() throws {
-        let circuitBytecodeBase64 = "H4sIAAAAAAAA/42NsQmAMBBF74KDWGqnOIIIVmJpYyHYWChiZ5kRxAWcQnScdJY29gZNSAgp8or7x93/fIQfT2jfdAPhiqCQuw9OoBxmLmqLicVbeJTZTmlVB8mVz+e4pOxZb/4n7h2fVy9Ey93kBZmTjiLsAAAA"
+        let circuitBytecodeBase64 = "H4sIAAAAAAAA/4XMPQ5AMBiA4aqLGNmIE4hITGIUiUHCYPCTshh7g37tYDWYHEDYXaSb0WLXE/DObx6dw7TUedVgoKvX9yUZ0pK0AsRpoO80pAE/DbuIiHRma4+DjdIkM90rHI8OfPmIW234F0JcSZgx9gL3WmBNjQAAAA=="
         let circuitBytecode = Data(base64Encoded: circuitBytecodeBase64)!
         let witnessMap = ["3", "5"]
 
