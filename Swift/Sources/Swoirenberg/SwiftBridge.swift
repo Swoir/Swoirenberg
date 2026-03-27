@@ -5,7 +5,7 @@ public func setup_srs_swift<GenericToRustStr: ToRustStr>(_ circuit_size: UInt32,
         __swift_bridge__$setup_srs_swift(circuit_size, srs_pathAsRustStr).intoSwiftRepr()
     })
 }
-public func setup_srs_from_bytecode_swift<GenericToRustStr: ToRustStr, GenericIntoRustString: IntoRustString>(_ circuit_bytecode: GenericIntoRustString, _ srs_path: Optional<GenericToRustStr>) -> Optional<UInt32> {
+public func setup_srs_from_bytecode_swift<GenericIntoRustString: IntoRustString, GenericToRustStr: ToRustStr>(_ circuit_bytecode: GenericIntoRustString, _ srs_path: Optional<GenericToRustStr>) -> Optional<UInt32> {
     return optionalRustStrToRustStr(srs_path, { srs_pathAsRustStr in
         __swift_bridge__$setup_srs_from_bytecode_swift({ let rustString = circuit_bytecode.intoRustString(); rustString.isOwned = false; return rustString.ptr }(), srs_pathAsRustStr).intoSwiftRepr()
     })
