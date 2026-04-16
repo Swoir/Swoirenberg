@@ -33,11 +33,13 @@ function create_framework() {
         echo "    <string>1.0.0</string>"
         echo "    <key>CFBundleVersion</key>"
         echo "    <string>14</string>"
-        if [ "$fw" = "aarch64-apple-ios" ]; then
+        # iOS minimum version
+        if [ "$fw" = "aarch64-apple-ios" ] || [ "$fw" = "aarch64-apple-ios-sim" ]; then
             echo "    <key>MinimumOSVersion</key>"
             echo "    <string>15.2</string>"
         fi
-        if [ "$fw" = "macos-arm64" ]; then
+        # macOS minimum version
+        if [ "$fw" = "macos" ]; then
             echo "    <key>MinimumOSVersion</key>"
             echo "    <string>13.0</string>"
         fi
@@ -83,14 +85,18 @@ function copy_framework_files() {
 }
 
 # Strip debug symbols to reduce module size
-strip -x Rust/target/aarch64-apple-darwin/release/libswoirenberg.a Rust/target/aarch64-apple-ios/release/libswoirenberg.a
+strip -x Rust/target/aarch64-apple-darwin/release/libswoirenberg.a \
+    Rust/target/aarch64-apple-ios/release/libswoirenberg.a \
+    Rust/target/x86_64-apple-darwin/release/libswoirenberg.a \
+    Rust/target/aarch64-apple-ios-sim/release/libswoirenberg.a
 
-# Create universal arm64 module
-mkdir -p Rust/target/macos-arm64/release
-lipo -create -output Rust/target/macos-arm64/release/libswoirenberg.a \
-    Rust/target/aarch64-apple-darwin/release/libswoirenberg.a
+# Create universal macOS module (arm64 + x86_64)
+mkdir -p Rust/target/macos/release
+lipo -create -output Rust/target/macos/release/libswoirenberg.a \
+    Rust/target/aarch64-apple-darwin/release/libswoirenberg.a \
+    Rust/target/x86_64-apple-darwin/release/libswoirenberg.a
 
-frameworks=("macos-arm64" "aarch64-apple-ios")
+frameworks=("macos" "aarch64-apple-ios" "aarch64-apple-ios-sim")
 create_framework "${frameworks[@]}"
 
 echo "Zipping framework"
