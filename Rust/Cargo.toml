@@ -39,3 +39,9 @@ version = ">=0.5.0-rc.0, <=0.5.0-rc.5"
 [profile.release]
 strip = "symbols"
 lto = true
+opt-level = "z"
+panic = "abort"
+
+# blake3's C impl (transitive via noir/ACVM) balloons to ~3.3MB at -O3; size-opt it (circuits never use it).
+[profile.release.package.blake3]
+opt-level = "z"
