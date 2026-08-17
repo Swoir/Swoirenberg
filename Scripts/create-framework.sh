@@ -90,6 +90,13 @@ strip -x Rust/target/aarch64-apple-darwin/release/libswoirenberg.a \
     Rust/target/x86_64-apple-darwin/release/libswoirenberg.a \
     Rust/target/aarch64-apple-ios-sim/release/libswoirenberg.a
 
+# Drop the recursive-proving stack (UltraHonk-only on-device); ~5MB per slice.
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+"$SCRIPT_DIR/strip-recursive-proving.sh" Rust/target/aarch64-apple-ios/release/libswoirenberg.a     arm64  iphoneos
+"$SCRIPT_DIR/strip-recursive-proving.sh" Rust/target/aarch64-apple-ios-sim/release/libswoirenberg.a arm64  iphonesimulator
+"$SCRIPT_DIR/strip-recursive-proving.sh" Rust/target/aarch64-apple-darwin/release/libswoirenberg.a  arm64  macosx
+"$SCRIPT_DIR/strip-recursive-proving.sh" Rust/target/x86_64-apple-darwin/release/libswoirenberg.a   x86_64 macosx
+
 # Create universal macOS module (arm64 + x86_64)
 mkdir -p Rust/target/macos/release
 lipo -create -output Rust/target/macos/release/libswoirenberg.a \
