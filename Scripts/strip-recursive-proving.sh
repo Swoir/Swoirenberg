@@ -18,27 +18,37 @@ PAT='eccvm|translator|chonk|goblin|hypernova|op_queue|databus|merge_prover|merge
 
 objs=$(ar t "$LIB" | grep -iE "$PAT" || true)
 [ -z "$objs" ] && { echo "strip-recursive: no recursive objects in $LIB"; exit 0; }
+
+tmp=$(mktemp -d)
+# Capture the external symbols DEFINED by the objects we're about to delete. Only
+# these can become orphans; everything else undefined in the archive (operator
+# new/delete, std::*, libSystem, Rust compiler_builtins, ...) is a legitimate import
+# resolved at final link and must NOT be stubbed, or the linker picks the trap.
+: > "$tmp/deleted_defs"
+printf '%s\n' "$objs" | while IFS= read -r o; do
+  [ -n "$o" ] || continue
+  ar p "$LIB" "$o" > "$tmp/m.o" 2>/dev/null || continue
+  nm -g "$tmp/m.o" 2>/dev/null | awk '/^[0-9a-f]/ {print $3}' >> "$tmp/deleted_defs"
+done
+sort -u "$tmp/deleted_defs" -o "$tmp/deleted_defs"
+
 printf '%s\n' "$objs" | while IFS= read -r o; do [ -n "$o" ] && ar d "$LIB" "$o"; done
 ranlib "$LIB"
 
-# Symbols referenced but no longer defined anywhere (their defining object was
-# deleted). Stub ONLY these: a symbol still defined by a kept object (e.g.
-# create_recursion_constraints, which UltraHonk proving genuinely uses) must stay
-# real, or the linker would pick the trap stub over the real definition and crash.
-# (nm can exit non-zero with benign warnings on the just-modified archive, and comm
-# is picky about sort order, so tolerate both.)
-syms=$(nm "$LIB" 2>/dev/null || true)
-defs=$(printf '%s\n' "$syms" | grep -E '^[0-9a-f]+ [A-Za-z] ' | awk '{print $3}' | sort -u || true)
-undef=$(printf '%s\n' "$syms" | grep -E '^ *U ' | awk '{print $2}' | sort -u || true)
-und=$(printf '%s\n' "$undef" | grep -Fxv -f <(printf '%s\n' "$defs") || true)
-[ -z "$und" ] && { echo "strip-recursive: nothing to stub"; exit 0; }
+# Stub ONLY orphans: symbols that a deleted object defined AND that are still
+# referenced-but-undefined after deletion. A symbol still defined by a kept object
+# (e.g. create_recursion_constraints, which UltraHonk proving genuinely uses) is not
+# undefined, so it's excluded and stays real. (nm can exit non-zero with benign
+# warnings on the just-modified archive, so tolerate that.)
+undef=$(nm "$LIB" 2>/dev/null | awk '$1=="U"{print $2}' | sort -u || true)
+und=$(printf '%s\n' "$undef" | grep -Fxf "$tmp/deleted_defs" || true)
+[ -z "$und" ] && { echo "strip-recursive: nothing to stub"; rm -rf "$tmp"; exit 0; }
 
 case "$ARCH" in
   arm64)  trap_insn='brk #0x1' ;;
   x86_64) trap_insn='ud2' ;;
   *) echo "unknown arch $ARCH" >&2; exit 1 ;;
 esac
-tmp=$(mktemp -d)
 { echo ".text"; echo ".p2align 2"
   printf '%s\n' "$und" | while IFS= read -r s; do
     [ -z "$s" ] && continue; printf '.globl %s\n%s:\n    %s\n' "$s" "$s" "$trap_insn"
