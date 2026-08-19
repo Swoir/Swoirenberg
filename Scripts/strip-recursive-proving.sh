@@ -21,10 +21,16 @@ objs=$(ar t "$LIB" | grep -iE "$PAT" || true)
 printf '%s\n' "$objs" | while IFS= read -r o; do [ -n "$o" ] && ar d "$LIB" "$o"; done
 ranlib "$LIB"
 
-# Symbols now undefined because we removed their definitions (bb Chonk commands +
-# ACIR recursion-constraint builders). Stub only these; leave real externs alone.
-und=$(nm "$LIB" 2>/dev/null | awk '$1=="U"{print $2}' | sort -u \
-  | grep -E 'Chonk[A-Za-z]*[0-9]executeE|create_[a-z_]*recursion' || true)
+# Symbols referenced but no longer defined anywhere (their defining object was
+# deleted). Stub ONLY these: a symbol still defined by a kept object (e.g.
+# create_recursion_constraints, which UltraHonk proving genuinely uses) must stay
+# real, or the linker would pick the trap stub over the real definition and crash.
+# (nm can exit non-zero with benign warnings on the just-modified archive, and comm
+# is picky about sort order, so tolerate both.)
+syms=$(nm "$LIB" 2>/dev/null || true)
+defs=$(printf '%s\n' "$syms" | grep -E '^[0-9a-f]+ [A-Za-z] ' | awk '{print $3}' | sort -u || true)
+undef=$(printf '%s\n' "$syms" | grep -E '^ *U ' | awk '{print $2}' | sort -u || true)
+und=$(printf '%s\n' "$undef" | grep -Fxv -f <(printf '%s\n' "$defs") || true)
 [ -z "$und" ] && { echo "strip-recursive: nothing to stub"; exit 0; }
 
 case "$ARCH" in
