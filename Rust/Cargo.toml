@@ -39,3 +39,43 @@ version = ">=0.5.0-rc.0, <=0.5.0-rc.5"
 [profile.release]
 strip = "symbols"
 lto = true
+opt-level = "z"
+panic = "abort"
+
+# blake3's C impl (transitive via noir/ACVM) balloons to ~3.3MB at -O3; size-opt it (circuits never use it).
+[profile.release.package.blake3]
+opt-level = "z"
+
+# Witness generation is the on-device hot path (EC scalar mult, hashing, ACVM
+# solving). -Oz makes it hang for real circuits (e.g. ECDSA sig check), so keep
+# these small-but-compute-heavy crates at opt-level 3; the rest stays "z" for size.
+[profile.release.package.k256]
+opt-level = 3
+[profile.release.package.p256]
+opt-level = 3
+[profile.release.package.ecdsa]
+opt-level = 3
+[profile.release.package.elliptic-curve]
+opt-level = 3
+[profile.release.package.primeorder]
+opt-level = 3
+[profile.release.package.primefield]
+opt-level = 3
+[profile.release.package.crypto-bigint]
+opt-level = 3
+[profile.release.package.num-bigint]
+opt-level = 3
+[profile.release.package.sha2]
+opt-level = 3
+[profile.release.package.keccak]
+opt-level = 3
+[profile.release.package.acvm]
+opt-level = 3
+[profile.release.package.acvm_blackbox_solver]
+opt-level = 3
+[profile.release.package.bn254_blackbox_solver]
+opt-level = 3
+[profile.release.package.brillig_vm]
+opt-level = 3
+[profile.release.package.ark-bn254]
+opt-level = 3
