@@ -1,6 +1,6 @@
 [package]
 name = "swoirenberg"
-version = "1.0.0-beta.22-1"
+version = "1.0.0-rc.3-1"
 authors = ["Bartosz Nowak", "Michael Elliot", "Theo Madzou"]
 repository = "https://github.com/Swoir/Swoirenberg.git"
 license = "Apache-2.0"
@@ -18,23 +18,7 @@ regex = "1.10.2"
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
 swift-bridge = "0.1"
-noir_rs = { git = "https://github.com/zkpassport/noir_rs.git", tag = "v1.0.0-beta.22-1", features = ["barretenberg"] }
-
-# Pin pre-release crates to versions compatible with k256/p256 0.14.0-rc.9
-# (the versions locked by noir v1.0.0-beta.22). Without these, cargo may
-# resolve to newer RCs of elliptic-curve/ecdsa that introduce breaking
-# trait bounds (e.g. MulVartime)
-[dependencies.elliptic-curve]
-version = ">=0.14.0-rc.0, <=0.14.0-rc.32"
-
-[dependencies.ecdsa]
-version = ">=0.17.0-rc.0, <=0.17.0-rc.18"
-
-[dependencies.primefield]
-version = ">=0.14.0-rc.0, <=0.14.0-rc.9"
-
-[dependencies.rfc6979]
-version = ">=0.5.0-rc.0, <=0.5.0-rc.5"
+noir_rs = { git = "https://github.com/zkpassport/noir_rs.git", rev = "2697a4e92fc64ed438b5be645809d8e96984efdb", features = ["barretenberg"] }
 
 [profile.release]
 strip = "symbols"
