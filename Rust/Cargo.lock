@@ -1884,7 +1884,7 @@ dependencies = [
 [[package]]
 name = "noir_rs"
 version = "1.0.0"
-source = "git+https://github.com/zkpassport/noir_rs.git?rev=2836406a3a9e585cc3b092150965644e05e493ef#2836406a3a9e585cc3b092150965644e05e493ef"
+source = "git+https://github.com/zkpassport/noir_rs.git?tag=v1.0.0-1#239f121563b8f2307ade5f890913105711596147"
 dependencies = [
  "acvm",
  "acvm_blackbox_solver",

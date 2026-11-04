@@ -18,7 +18,7 @@ regex = "1.10.2"
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
 swift-bridge = "0.1"
-noir_rs = { git = "https://github.com/zkpassport/noir_rs.git", rev = "2836406a3a9e585cc3b092150965644e05e493ef", features = ["barretenberg"] }
+noir_rs = { git = "https://github.com/zkpassport/noir_rs.git", tag = "v1.0.0-1", features = ["barretenberg"] }
 
 [profile.release]
 strip = "symbols"
