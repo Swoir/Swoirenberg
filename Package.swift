@@ -21,8 +21,8 @@ let package = Package(
             linkerSettings: [ .linkedFramework("SystemConfiguration") ]),
         .binaryTarget(
             name: "SwoirenbergFramework",
-            url: "https://github.com/Swoir/Swoirenberg/releases/download/v1.0.0-beta.22-4/Swoirenberg.xcframework.zip",
-            checksum: "37adccf28da03f397965516e0b45dbbd48d980df32e7485d871a376f91a35ee0"),
+            url: "https://github.com/Swoir/Swoirenberg/releases/download/v1.0.0-1/Swoirenberg.xcframework.zip",
+            checksum: "b5c46f23bdc1182be794ee823ee8af219eb7d7e46680a12d4c33730ae179852a"),
         .testTarget(
             name: "SwoirenbergTests",
             dependencies: ["Swoirenberg"],
